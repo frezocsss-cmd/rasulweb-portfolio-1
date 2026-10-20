@@ -7,21 +7,33 @@ export default function Reveal({ children, className = "", delay = 0, as: Tag = 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    if (typeof window === "undefined" || !("IntersectionObserver" in window)) {
+      setVisible(true);
+      return;
+    }
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setVisible(true);
       return;
     }
+
+    // Safety fallback: never leave content hidden if the observer misbehaves.
+    const fallback = setTimeout(() => setVisible(true), 2500);
+
     const obs = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setVisible(true);
           obs.disconnect();
+          clearTimeout(fallback);
         }
       },
-      { threshold: 0.14, rootMargin: "0px 0px -70px 0px" }
+      { threshold: 0.05, rootMargin: "0px 0px -60px 0px" }
     );
     obs.observe(el);
-    return () => obs.disconnect();
+    return () => {
+      obs.disconnect();
+      clearTimeout(fallback);
+    };
   }, []);
 
   const base = variant === "mask" ? "reveal-mask" : "reveal";
