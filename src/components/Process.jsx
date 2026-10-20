@@ -29,7 +29,7 @@ export default function Process() {
             kicker="JARAYON"
             title={
               <>
-                Qanday <span className="text-gradient-neon">ishlayman</span>
+                Qanday <span className="text-serif-italic font-medium text-champagne">ishlayman</span>
               </>
             }
             description="Tanishuvdan to topshirishgacha — aniq va tushunarli uch bosqichli jarayon."
@@ -37,18 +37,18 @@ export default function Process() {
         </Reveal>
 
         <div className="relative mt-16">
-          <div className="pointer-events-none absolute left-[1.65rem] top-4 bottom-4 w-px bg-gradient-to-b from-neon/60 via-white/10 to-transparent lg:left-0 lg:right-0 lg:top-[3.25rem] lg:h-px lg:w-auto lg:bg-gradient-to-r lg:from-transparent lg:via-neon/40 lg:to-transparent" />
+          <div className="pointer-events-none absolute left-[1.65rem] top-4 bottom-4 w-px bg-gradient-to-b from-champagne via-hairline to-transparent lg:left-0 lg:right-0 lg:top-[3.25rem] lg:h-px lg:w-auto lg:bg-gradient-to-r lg:from-transparent lg:via-champagne/60 lg:to-transparent" />
 
           <div className="grid gap-10 lg:grid-cols-3 lg:gap-8">
             {steps.map((step, i) => (
               <Reveal key={step.num} delay={i * 130}>
                 <div className="relative flex gap-5 lg:block">
-                  <div className="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-neon/30 bg-ink font-mono text-sm font-bold text-neon shadow-[0_0_30px_-6px_rgba(255,0,60,0.6)]">
+                  <div className="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-hairline bg-card font-mono text-sm font-bold text-champagne shadow-[0_14px_34px_-22px_rgba(52,45,39,0.7)]">
                     {step.num}
                   </div>
                   <div className="lg:mt-7">
-                    <h3 className="text-lg font-bold tracking-tight">{step.title}</h3>
-                    <p className="mt-2.5 max-w-sm text-sm leading-relaxed text-soft">{step.desc}</p>
+                    <h3 className="text-lg font-bold tracking-tight text-espresso">{step.title}</h3>
+                    <p className="mt-2.5 max-w-sm text-sm leading-relaxed text-mocha">{step.desc}</p>
                   </div>
                 </div>
               </Reveal>

@@ -5,36 +5,36 @@ import SectionHeading from "./SectionHeading";
 
 const codeLines = [
   [
-    { t: "const", c: "text-[#ff8fa3]" },
-    { t: " developer", c: "text-white/90" },
-    { t: " = ", c: "text-soft" },
-    { t: "{", c: "text-soft" },
+    { t: "const", c: "text-champagne" },
+    { t: " developer", c: "text-espresso/90" },
+    { t: " = ", c: "text-mocha" },
+    { t: "{", c: "text-mocha" },
   ],
   [
-    { t: "  nomi", c: "text-[#ffd166]" },
-    { t: ": ", c: "text-soft" },
-    { t: "'Rasul Ravshanbekov'", c: "text-[#ff6b6b]" },
-    { t: ",", c: "text-soft" },
+    { t: "  nomi", c: "text-espresso/80" },
+    { t: ": ", c: "text-mocha" },
+    { t: "'Rasul Ravshanbekov'", c: "text-champagne" },
+    { t: ",", c: "text-mocha" },
   ],
   [
-    { t: "  kasbi", c: "text-[#ffd166]" },
-    { t: ": ", c: "text-soft" },
-    { t: "'Frontend Developer'", c: "text-[#ff6b6b]" },
-    { t: ",", c: "text-soft" },
+    { t: "  kasbi", c: "text-espresso/80" },
+    { t: ": ", c: "text-mocha" },
+    { t: "'Frontend Developer'", c: "text-champagne" },
+    { t: ",", c: "text-mocha" },
   ],
   [
-    { t: "  yondashuv", c: "text-[#ffd166]" },
-    { t: ": ", c: "text-soft" },
-    { t: "'dizayn + tezlik'", c: "text-[#ff6b6b]" },
-    { t: ",", c: "text-soft" },
+    { t: "  yondashuv", c: "text-espresso/80" },
+    { t: ": ", c: "text-mocha" },
+    { t: "'dizayn + tezlik'", c: "text-champagne" },
+    { t: ",", c: "text-mocha" },
   ],
   [
-    { t: "  holat", c: "text-[#ffd166]" },
-    { t: ": ", c: "text-soft" },
-    { t: "'loyihalarga ochiq'", c: "text-[#ff6b6b]" },
-    { t: ",", c: "text-soft" },
+    { t: "  holat", c: "text-espresso/80" },
+    { t: ": ", c: "text-mocha" },
+    { t: "'loyihalarga ochiq'", c: "text-champagne" },
+    { t: ",", c: "text-mocha" },
   ],
-  [{ t: "};", c: "text-soft" }],
+  [{ t: "};", c: "text-mocha" }],
 ];
 
 export default function About() {
@@ -50,17 +50,18 @@ export default function About() {
                 kicker="MEN HAQIMDA"
                 title={
                   <>
-                    Men g'oyalarni <span className="text-gradient-neon">web-saytlarga</span> aylantiraman.
+                    Men g'oyalarni{" "}
+                    <span className="text-serif-italic font-medium text-champagne">web-saytlarga</span> aylantiraman.
                   </>
                 }
               />
             </Reveal>
 
             <Reveal delay={80}>
-              <p className="mt-6 max-w-xl text-sm leading-relaxed text-soft sm:text-base">
-                Men Rasul Ravshanbekov — zamonaviy, responsive va interaktiv web-saytlar yaratishga ixtisoslashgan
-                frontend dasturchiman. Maqsadim — bizneslar uchun chiroyli ko'rinadigan, qulay ishlaydigan va ularning
-                vazifalarini bajarishga yordam beradigan saytlar yaratish.
+              <p className="mt-6 max-w-xl text-sm leading-relaxed text-mocha sm:text-base">
+                Men Rasul Ravshanbekov — zamonaviy, responsive va interaktiv web saytlar yaratishga ixtisoslashgan
+                frontend dasturchiman. React va zamonaviy web texnologiyalari yordamida bizneslar uchun chiroyli
+                ko'rinadigan, qulay ishlaydigan va SEO-ga mos saytlar yarataman.
               </p>
             </Reveal>
 
@@ -69,12 +70,12 @@ export default function About() {
                 {technologies.map((tech) => (
                   <div
                     key={tech}
-                    className="group flex flex-col items-center gap-2.5 rounded-2xl border border-white/[0.08] bg-white/[0.025] px-3 py-5 text-center transition-all duration-300 hover:-translate-y-1 hover:border-neon/30 hover:bg-white/[0.05]"
+                    className="group flex flex-col items-center gap-2.5 rounded-2xl border border-hairline bg-card/70 px-3 py-5 text-center transition-all duration-300 hover:-translate-y-1 hover:border-champagne/50 hover:bg-card"
                   >
                     <span className="flex h-9 w-9 items-center justify-center">
                       <TechIcon name={tech} className="h-8 w-8" />
                     </span>
-                    <span className="text-[11px] font-medium leading-tight text-white/80">{tech}</span>
+                    <span className="text-[11px] font-medium leading-tight text-espresso/80">{tech}</span>
                   </div>
                 ))}
               </div>
@@ -83,18 +84,18 @@ export default function About() {
 
           <Reveal delay={120}>
             <div className="relative">
-              <div className="pointer-events-none absolute -inset-6 -z-10 rounded-full bg-[radial-gradient(circle,rgba(255,0,60,0.18),transparent_65%)] animate-glow" />
+              <div className="pointer-events-none absolute -inset-6 -z-10 rounded-full bg-[radial-gradient(circle,rgba(184,165,138,0.22),transparent_66%)]" />
 
-              <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#0b0b0f] shadow-[0_40px_120px_-50px_rgba(255,0,60,0.5)]">
-                <div className="flex items-center gap-2 border-b border-white/[0.07] bg-white/[0.02] px-4 py-3">
-                  <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
-                  <span className="ml-3 font-mono text-[10px] text-soft">developer.js</span>
+              <div className="overflow-hidden rounded-2xl border border-hairline bg-card shadow-[0_40px_100px_-55px_rgba(52,45,39,0.6)]">
+                <div className="flex items-center gap-2 border-b border-hairline bg-cream-2/50 px-4 py-3">
+                  <span className="h-2.5 w-2.5 rounded-full bg-sand" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-champagne/70" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-espresso/20" />
+                  <span className="ml-3 font-mono text-[10px] text-mocha">developer.js</span>
                 </div>
 
                 <div className="flex gap-3 p-4 sm:gap-4 sm:p-6">
-                  <div className="select-none font-mono text-[10px] leading-7 text-white/20 sm:text-[11px]">
+                  <div className="select-none font-mono text-[10px] leading-7 text-espresso/20 sm:text-[11px]">
                     {codeLines.map((_, i) => (
                       <div key={i}>{String(i + 1).padStart(2, "0")}</div>
                     ))}
@@ -110,18 +111,18 @@ export default function About() {
                           ))}
                         </div>
                       ))}
-                      <div className="mt-1 inline-flex items-center gap-2 text-soft">
-                        <span className="text-[#ff8fa3]">;</span>
-                        <span className="inline-block h-4 w-2 bg-neon animate-blink" />
+                      <div className="mt-1 inline-flex items-center gap-2 text-mocha">
+                        <span className="text-champagne">;</span>
+                        <span className="inline-block h-4 w-2 bg-champagne animate-blink" />
                       </div>
                     </code>
                   </pre>
                 </div>
               </div>
 
-              <div className="absolute -bottom-5 -left-4 hidden rounded-2xl border border-white/10 bg-ink/85 px-4 py-3 backdrop-blur-xl sm:block animate-float-y">
-                <div className="font-mono text-[10px] uppercase tracking-widest text-soft">Stack</div>
-                <div className="mt-1 text-sm font-semibold text-white">React · JS · Tailwind</div>
+              <div className="absolute -bottom-5 -left-4 hidden rounded-2xl border border-hairline bg-card/95 px-4 py-3 backdrop-blur-xl sm:block animate-float-y">
+                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-mocha">Stack</div>
+                <div className="mt-1 text-sm font-semibold text-espresso">React · JS · Tailwind</div>
               </div>
             </div>
           </Reveal>

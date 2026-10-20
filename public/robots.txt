@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Barcha qidiruv botlariga ruxsat berilgan.
+# Render uchun zarur bo'lgan JS, CSS va assetlar bloklanmaydi.
+
+Sitemap: https://www.rasulweb.uz/sitemap.xml

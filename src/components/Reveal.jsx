@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-export default function Reveal({ children, className = "", delay = 0, as: Tag = "div" }) {
+export default function Reveal({ children, className = "", delay = 0, as: Tag = "div", variant = "rise" }) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
 
@@ -24,10 +24,12 @@ export default function Reveal({ children, className = "", delay = 0, as: Tag = 
     return () => obs.disconnect();
   }, []);
 
+  const base = variant === "mask" ? "reveal-mask" : "reveal";
+
   return (
     <Tag
       ref={ref}
-      className={`reveal ${visible ? "is-visible" : ""} ${className}`}
+      className={`${base} ${visible ? "is-visible" : ""} ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}

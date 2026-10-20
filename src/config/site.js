@@ -4,6 +4,7 @@ export const site = {
   owner: "Rasul Ravshanbekov",
   role: "Frontend Developer & Web-sayt yaratuvchi",
   location: "O'zbekiston",
+  url: "https://www.rasulweb.uz/",
   telegram: "https://t.me/rasulweb_uz",
   telegramChannel: "https://t.me/rasulweb_uz",
   orderUsername: "rasulwebuz",
