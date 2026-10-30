@@ -8,7 +8,7 @@ export default function TechMarquee() {
         <div className="flex w-max animate-marquee items-center gap-10 px-6">
           {items.map((tech, i) => (
             <div key={`${tech}-${i}`} className="flex items-center gap-10">
-              <span className="whitespace-nowrap font-mono text-xs uppercase tracking-[0.3em] text-mocha/70">
+              <span className="whitespace-nowrap font-mono text-xs uppercase tracking-[0.3em] text-mocha">
                 {tech}
               </span>
               <span className="h-1 w-1 rounded-full bg-champagne/70" />

@@ -1,0 +1,20 @@
+# Rasulweb.uz
+
+> Rasulweb.uz — Rasul Ravshanbekov tomonidan yaratilgan web-saytlar, Telegram botlar, admin panellar va biznes avtomatlashtirish xizmatlari. O'zbekiston, Qozog'iston, Rossiya va xalqaro mijozlar bilan masofadan ishlaydi.
+
+## Asosiy sahifa
+- [Rasulweb.uz](https://www.rasulweb.uz/): web sayt yaratish, tariflar va portfolio.
+- [Portfolio](https://www.rasulweb.uz/#projects): real bizneslar uchun yaratilgan saytlar.
+- [Xizmatlar](https://www.rasulweb.uz/#services): landing page, biznes sayti, internet do'kon, Telegram bot va admin panel.
+- [Xizmatlar va tariflar](https://www.rasulweb.uz/#packages): START $100, BUSINESS $200, PRO SYSTEM $350+.
+- [Qo'shimcha xizmatlar](https://www.rasulweb.uz/#additional-services): Telegram bot, admin panel, Supabase, API, redesign va avtomatlashtirish.
+- [FAQ](https://www.rasulweb.uz/#faq): narxlar, muddatlar va texnik savollarga javoblar.
+- [Aloqa](https://www.rasulweb.uz/#contact): loyiha bo'yicha bog'lanish.
+
+## Aloqa
+- Telegram: https://t.me/rasulweb_uz
+- Buyurtma: https://t.me/rasulwebuz
+- Instagram: https://www.instagram.com/rasulweb.uz/
+
+## Texnologiyalar
+React, JavaScript, Tailwind CSS, Supabase, Telegram Bot API, responsive dizayn, SEO.

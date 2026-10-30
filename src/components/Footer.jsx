@@ -26,8 +26,12 @@ export default function Footer() {
               </span>
             </a>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-mocha">
-              {site.owner} — zamonaviy, responsive va interaktiv web-saytlar yaratuvchi frontend dasturchi. Biznesingiz
-              uchun ishonchli raqamli yechim.
+              {site.owner} — zamonaviy, responsive va interaktiv web-saytlar yaratuvchi frontend dasturchi.
+              O'zbekiston, Qozog'iston, Rossiya va xalqaro bizneslar uchun ishonchli raqamli yechim.
+            </p>
+            <p lang="en" className="mt-2 max-w-sm text-xs leading-relaxed text-mocha">
+              Available for international clients: website development, React development, e-commerce and business
+              automation.
             </p>
             <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-champagne/40 bg-champagne/10 px-3.5 py-1.5 text-[11px] font-medium text-espresso/80">
               <span className="h-1.5 w-1.5 rounded-full bg-champagne" />
@@ -36,7 +40,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-[0.22em] text-espresso/90">Navigatsiya</h4>
+            <h3 className="text-xs font-bold uppercase tracking-[0.22em] text-espresso/90">Navigatsiya</h3>
             <ul className="mt-5 space-y-3">
               {navLinks.map((link) => (
                 <li key={link.href}>
@@ -45,11 +49,21 @@ export default function Footer() {
                   </a>
                 </li>
               ))}
+              <li>
+                <a href="#additional-services" className="text-sm text-mocha transition-colors hover:text-champagne">
+                  Qo'shimcha xizmatlar
+                </a>
+              </li>
+              <li>
+                <a href="#faq" className="text-sm text-mocha transition-colors hover:text-champagne">
+                  FAQ
+                </a>
+              </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-[0.22em] text-espresso/90">Bog'lanish</h4>
+            <h3 className="text-xs font-bold uppercase tracking-[0.22em] text-espresso/90">Bog'lanish</h3>
             <ul className="mt-5 space-y-3">
               <li>
                 <a
@@ -72,6 +86,9 @@ export default function Footer() {
                 </a>
               </li>
               <li className="text-sm text-mocha">{site.location}</li>
+              <li className="text-xs leading-relaxed text-mocha">
+                Xizmatlar: O'zbekiston · Qozog'iston · Rossiya · Xalqaro
+              </li>
             </ul>
             <button
               type="button"

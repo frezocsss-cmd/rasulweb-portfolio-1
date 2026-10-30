@@ -103,6 +103,39 @@ export const ServiceIcon = ({ name, className = "w-6 h-6" }) => {
           <path d="m8 8-4 4 4 4M16 8l4 4-4 4M13 5l-2 14" />
         </svg>
       );
+    case "telegram":
+      return (
+        <svg {...common}>
+          <path d="m21 4-3.2 15.1a1 1 0 0 1-1.6.6l-4.4-3.2-2.1 2a1 1 0 0 1-1.7-.7l.1-3.2L18 6.3a.5.5 0 0 0-.7-.6L6.3 12.4 3 11.4a.8.8 0 0 1 .1-1.5L20.4 3a.7.7 0 0 1 .6 1z" />
+        </svg>
+      );
+    case "admin":
+      return (
+        <svg {...common}>
+          <rect x="3" y="4" width="18" height="16" rx="2" />
+          <path d="M3 9h18M8 13h3M8 16h6" />
+        </svg>
+      );
+    case "database":
+      return (
+        <svg {...common}>
+          <ellipse cx="12" cy="5" rx="8" ry="3" />
+          <path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" />
+        </svg>
+      );
+    case "api":
+      return (
+        <svg {...common}>
+          <path d="M8 9 4 12l4 3M16 9l4 3-4 3M13 5l-2 14" />
+        </svg>
+      );
+    case "automation":
+      return (
+        <svg {...common}>
+          <circle cx="12" cy="12" r="3" />
+          <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1z" />
+        </svg>
+      );
     default:
       return null;
   }

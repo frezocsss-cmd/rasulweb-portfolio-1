@@ -5,8 +5,9 @@
   --color-cream-2: #efeae0;
   --color-card: #fffefa;
   --color-espresso: #342d27;
-  --color-mocha: #82796d;
+  --color-mocha: #6f675d;
   --color-champagne: #b8a58a;
+  --color-champagne-ink: #7b6646;
   --color-sand: #d8ccb9;
   --color-hairline: rgba(91, 76, 59, 0.13);
 
@@ -182,7 +183,7 @@
     font-style: italic;
   }
   .text-champagne {
-    color: var(--color-champagne);
+    color: var(--color-champagne-ink);
   }
   .mask-fade-x {
     -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);

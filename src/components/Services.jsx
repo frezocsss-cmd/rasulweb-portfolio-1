@@ -1,12 +1,9 @@
 import { services } from "../config/services";
-import { useOrder } from "../context/order";
-import { ArrowUpRight, ServiceIcon } from "./icons";
+import { ArrowRight, ArrowUpRight, ServiceIcon } from "./icons";
 import Reveal from "./Reveal";
 import SectionHeading from "./SectionHeading";
 
 export default function Services() {
-  const { openOrder } = useOrder();
-
   return (
     <section id="services" className="relative z-10 px-4 py-20 sm:px-6 sm:py-28 lg:py-32">
       <div className="mx-auto max-w-7xl">
@@ -36,7 +33,7 @@ export default function Services() {
                 <h3 className="relative mt-6 text-lg font-bold tracking-tight text-espresso">{service.title}</h3>
                 <p className="relative mt-3 text-sm leading-relaxed text-mocha">{service.desc}</p>
 
-                <div className="relative mt-6 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-mocha/70 transition-colors duration-300 group-hover:text-champagne">
+                <div className="relative mt-6 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-mocha transition-colors duration-300 group-hover:text-champagne">
                   Batafsil
                   <ArrowUpRight className="h-3.5 w-3.5" />
                 </div>
@@ -46,18 +43,48 @@ export default function Services() {
         </div>
 
         <Reveal delay={120}>
-          <div className="mt-10 flex flex-col items-center justify-between gap-5 rounded-2xl border border-hairline bg-gradient-to-r from-cream-2/80 via-card to-transparent p-5 text-center sm:flex-row sm:p-7 sm:text-left">
-            <p className="max-w-2xl text-sm leading-relaxed text-mocha">
-              Aniq qamrov va narx sizning talablaringizga bog'liq. Loyihangiz haqida yozing — men eng mos yechimni
-              taklif qilaman.
-            </p>
-            <button
-              type="button"
-              onClick={() => openOrder()}
-              className="w-full shrink-0 rounded-full bg-espresso px-6 py-3 text-sm font-semibold text-cream shadow-[0_18px_45px_-20px_rgba(52,45,39,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#473e35] sm:w-auto"
-            >
-              Loyihani muhokama qilish
-            </button>
+          <div className="mt-12 grid gap-7 rounded-3xl border border-hairline bg-card/70 p-6 sm:p-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+            <div>
+              <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.24em] text-champagne">
+                Nima uchun kerak?
+              </span>
+              <h3 className="mt-2 text-xl font-bold tracking-tight text-espresso sm:text-2xl">
+                Biznes uchun zamonaviy sayt — mijozlar va ishonch manbai
+              </h3>
+              <p className="mt-4 text-sm leading-relaxed text-mocha">
+                Web sayt biznesingizni kecha-yu kunduz taqdim etadi, mijozlarga xizmatlar va mahsulotlar haqida aniq
+                ma'lumot beradi hamda so'rovlarni qabul qiladi. Landing page, internet do'kon yoki admin panelli
+                tizim — har biri biznesingizning aniq maqsadiga xizmat qilishi kerak.
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-mocha">
+                Telegram bot, Supabase integratsiyasi va buyurtmalarni boshqarish kabi yechimlar kundalik ishni
+                yengillashtiradi. Sayt yaratish jarayonida tezlik, mobil moslashuv va SEO asoslari ham hisobga
+                olinadi.
+              </p>
+            </div>
+            <div className="grid gap-3">
+              <a
+                href="#packages"
+                className="group flex items-center justify-between gap-4 rounded-xl border border-hairline bg-cream/70 px-4 py-3.5 text-sm font-semibold text-espresso transition-all duration-300 hover:border-champagne/60 hover:bg-card"
+              >
+                Xizmatlar va tariflar
+                <ArrowRight className="h-4 w-4 text-mocha transition-transform duration-300 group-hover:translate-x-0.5 group-hover:text-champagne" />
+              </a>
+              <a
+                href="#additional-services"
+                className="group flex items-center justify-between gap-4 rounded-xl border border-hairline bg-cream/70 px-4 py-3.5 text-sm font-semibold text-espresso transition-all duration-300 hover:border-champagne/60 hover:bg-card"
+              >
+                Qo'shimcha xizmatlar
+                <ArrowRight className="h-4 w-4 text-mocha transition-transform duration-300 group-hover:translate-x-0.5 group-hover:text-champagne" />
+              </a>
+              <a
+                href="#contact"
+                className="group flex items-center justify-between gap-4 rounded-xl bg-espresso px-4 py-3.5 text-sm font-semibold text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#473e35]"
+              >
+                Loyihani muhokala qilish
+                <ArrowRight className="h-4 w-4 text-cream/80 transition-transform duration-300 group-hover:translate-x-0.5" />
+              </a>
+            </div>
           </div>
         </Reveal>
       </div>

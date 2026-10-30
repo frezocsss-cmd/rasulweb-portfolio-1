@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { formatPrice, packages, siteTypes } from "../config/packages";
+import { packages, siteTypes } from "../config/packages";
 import { site } from "../config/site";
 import { useOrder } from "../context/order";
 import {
@@ -21,7 +21,7 @@ const empty = {
 };
 
 const inputClass =
-  "w-full min-w-0 rounded-xl border border-hairline bg-cream-2/50 px-3.5 py-3 text-sm text-espresso outline-none transition-all duration-300 placeholder:text-mocha/50 focus:border-champagne/70 focus:bg-card focus:ring-2 focus:ring-champagne/20";
+  "w-full min-w-0 rounded-xl border border-hairline bg-cream-2/50 px-3.5 py-3 text-sm text-espresso outline-none transition-all duration-300 placeholder:text-mocha focus:border-champagne/70 focus:bg-card focus:ring-2 focus:ring-champagne/20";
 
 const labelClass = "mb-1.5 block text-xs font-semibold text-espresso/85";
 const errorClass = "mt-1.5 text-[11px] font-medium text-rose-500";
@@ -187,7 +187,7 @@ export default function OrderModal() {
               <div className="mt-4 rounded-2xl border border-hairline bg-cream-2/40 p-4">
                 <div className="mb-2 flex items-center justify-between gap-3">
                   <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-mocha">Buyurtma matni</span>
-                  <span className="truncate text-[10px] font-medium text-mocha/70">@{site.orderUsername}</span>
+                  <span className="truncate text-[10px] font-medium text-mocha">@{site.orderUsername}</span>
                 </div>
                 <pre className="max-h-52 overflow-y-auto whitespace-pre-wrap break-words font-mono text-[11px] leading-relaxed text-espresso/80">
                   {message}
@@ -264,7 +264,7 @@ export default function OrderModal() {
                       value={formatPhoneInput(form.telefon)}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="90 123 45 67"
-                      className="w-full min-w-0 bg-transparent px-3 py-3 text-sm text-espresso outline-none placeholder:text-mocha/50"
+                      className="w-full min-w-0 bg-transparent px-3 py-3 text-sm text-espresso outline-none placeholder:text-mocha"
                     />
                   </div>
                   {fieldError("telefon")}
@@ -308,7 +308,7 @@ export default function OrderModal() {
                   </option>
                   {packages.map((p) => (
                     <option key={p.id} value={p.id} className="bg-card">
-                      {p.name} — {formatPrice(p.price)} so'mdan
+                      {p.name} — {p.priceLabel} {p.priceNote}
                     </option>
                   ))}
                 </select>
@@ -324,7 +324,7 @@ export default function OrderModal() {
                         {activePackage.name} paketiga kiritilgan
                       </span>
                       <span className="shrink-0 text-[11px] font-semibold text-champagne">
-                        {formatPrice(activePackage.price)} so'mdan
+                        {activePackage.priceLabel} {activePackage.priceNote}
                       </span>
                     </div>
                     <ul className="space-y-2">
@@ -373,7 +373,7 @@ export default function OrderModal() {
               </label>
 
               <div className="flex flex-col gap-3 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-[11px] leading-relaxed text-mocha/70">
+                <p className="text-[11px] leading-relaxed text-mocha">
                   Yuborilgach, buyurtma matni nusxalanadi va Telegram ochiladi.
                 </p>
                 <button

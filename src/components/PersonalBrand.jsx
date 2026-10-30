@@ -43,7 +43,7 @@ export default function PersonalBrand() {
         <Reveal>
           <SectionHeading
             align="left"
-            index="07"
+            index="08"
             kicker="SHAXSIY BRANDING"
             title={
               <>

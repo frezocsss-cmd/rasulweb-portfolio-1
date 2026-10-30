@@ -1,5 +1,3 @@
-import { formatPrice } from "../config/packages";
-
 const pad = (n) => String(n).padStart(2, "0");
 
 export function digitsOnly(value) {
@@ -38,7 +36,7 @@ export function buildOrderMessage(data) {
     "",
     `🌐 Sayt turi: ${saytTuri || "—"}`,
     `📦 Paket: ${paket ? paket.name : "—"}`,
-    `💰 Paket narxi: ${paket ? `${formatPrice(paket.price)} so'mdan` : "—"}`,
+    `💰 Paket narxi: ${paket ? `${paket.priceLabel} ${paket.priceNote}` : "—"}`,
     "",
     "✅ PAKET TALABLARI:",
     ...(paket ? paket.features.map((f) => `• ${f}`) : ["• —"]),

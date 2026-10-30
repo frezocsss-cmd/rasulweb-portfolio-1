@@ -16,7 +16,7 @@ export const navLinks = [
   { href: "#home", label: "Bosh sahifa" },
   { href: "#projects", label: "Loyihalar" },
   { href: "#services", label: "Xizmatlar" },
-  { href: "#packages", label: "Paketlar" },
+  { href: "#packages", label: "Tariflar" },
   { href: "#about", label: "Men haqimda" },
   { href: "#contact", label: "Aloqa" },
 ];

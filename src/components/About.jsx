@@ -46,7 +46,7 @@ export default function About() {
             <Reveal>
               <SectionHeading
                 align="left"
-                index="04"
+                index="05"
                 kicker="MEN HAQIMDA"
                 title={
                   <>
@@ -95,7 +95,7 @@ export default function About() {
                 </div>
 
                 <div className="flex gap-3 p-4 sm:gap-4 sm:p-6">
-                  <div className="select-none font-mono text-[10px] leading-7 text-espresso/20 sm:text-[11px]">
+                  <div className="select-none font-mono text-[10px] leading-7 text-mocha sm:text-[11px]">
                     {codeLines.map((_, i) => (
                       <div key={i}>{String(i + 1).padStart(2, "0")}</div>
                     ))}

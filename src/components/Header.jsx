@@ -48,7 +48,7 @@ export default function Header() {
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6">
-        <a href="#home" className="group flex items-center gap-2.5" aria-label="Rasulweb.uz">
+        <a href="#home" className="group flex items-center gap-2.5">
           <span className="relative flex h-9 w-9 items-center justify-center rounded-xl border border-hairline bg-card font-serif text-lg font-semibold text-champagne shadow-[0_6px_18px_-10px_rgba(52,45,39,0.5)]">
             R
           </span>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { site } from "../config/site";
 import { useOrder } from "../context/order";
 import { ArrowUpRight, Sparkle } from "./icons";
@@ -151,17 +151,19 @@ export default function Hero() {
 
           <h1 className="text-[clamp(2rem,8.6vw,4.4rem)] font-extrabold leading-[1.06] tracking-tight text-espresso">
             {words.map((w, i) => (
-              <span
-                key={w.text}
-                className="mr-[0.28em] inline-block animate-rise"
-                style={{ animationDelay: `${180 + i * 90}ms` }}
-              >
-                {w.accent ? (
-                  <span className="text-serif-italic font-medium text-champagne">{w.text}</span>
-                ) : (
-                  <span>{w.text}</span>
-                )}
-              </span>
+              <Fragment key={w.text}>
+                <span
+                  className="mr-[0.28em] inline-block animate-rise"
+                  style={{ animationDelay: `${180 + i * 90}ms` }}
+                >
+                  {w.accent ? (
+                    <span className="text-serif-italic font-medium text-champagne">{w.text}</span>
+                  ) : (
+                    <span>{w.text}</span>
+                  )}
+                </span>
+                {i < words.length - 1 ? " " : null}
+              </Fragment>
             ))}
           </h1>
 
@@ -169,9 +171,9 @@ export default function Hero() {
             className="mt-7 max-w-xl text-base leading-relaxed text-mocha sm:text-lg animate-rise"
             style={{ animationDelay: "560ms" }}
           >
-            O'zbekistonda biznes uchun zamonaviy web sayt yaratish: landing page, biznes sayti va internet do'konlar.
-            Tezkor, responsive va SEO-ga mos saytlar. G'oyangizni mijozlar olib keladigan raqamli mahsulotga
-            aylantiramiz.
+            O'zbekiston, Qozog'iston va Rossiya bizneslari uchun zamonaviy web sayt yaratish: landing page, biznes
+            sayti, internet do'kon, Telegram bot va admin panel. React asosida tezkor, responsive va SEO-ga mos
+            saytlar. Narxlar $100 dan boshlanadi.
           </p>
 
           <div

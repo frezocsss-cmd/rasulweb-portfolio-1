@@ -25,7 +25,7 @@ export default function Process() {
       <div className="mx-auto max-w-7xl">
         <Reveal>
           <SectionHeading
-            index="05"
+            index="06"
             kicker="JARAYON"
             title={
               <>

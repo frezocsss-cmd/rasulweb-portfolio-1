@@ -124,17 +124,16 @@ export default function Projects() {
 
                   <div className={`relative ${alternate ? "lg:order-1" : ""}`}>
                     <span
-                      className="pointer-events-none absolute -top-10 right-0 select-none font-serif text-[clamp(3.5rem,14vw,8rem)] font-semibold leading-none text-espresso/[0.06]"
+                      className="pointer-events-none absolute -top-10 right-0 select-none before:font-serif before:text-[clamp(3.5rem,14vw,8rem)] before:font-semibold before:leading-none before:text-espresso/[0.06] before:content-[attr(data-number)]"
+                      data-number={project.id}
                       aria-hidden="true"
-                    >
-                      {project.id}
-                    </span>
+                    />
                     <div className="relative">
                       <span
                         className="inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-[11px] font-semibold"
                         style={{
                           borderColor: `${project.accent}55`,
-                          color: project.accent,
+                          color: "#342d27",
                           background: `${project.accent}12`,
                         }}
                       >

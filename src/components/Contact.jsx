@@ -42,7 +42,7 @@ export default function Contact() {
               <div className="mb-5 flex items-center justify-center gap-3">
                 <span className="h-px w-8 bg-champagne/70" />
                 <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.28em] text-champagne">
-                  06 — ALOQA
+                  09 — ALOQA
                 </span>
                 <span className="h-px w-8 bg-champagne/70" />
               </div>
@@ -53,8 +53,8 @@ export default function Contact() {
               </h2>
 
               <p className="mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-mocha sm:text-base">
-                Biznesingiz uchun web-sayt kerakmi? Loyiha haqida yozing — talablaringizni ko'rib chiqib, mos yechimni
-                taklif qilaman.
+                Biznesingiz uchun web-sayt kerakmi? O'zbekiston, Qozog'iston, Rossiya yoki boshqa davlatdan
+                bo'lsangiz ham loyiha haqida yozing — talablaringizni ko'rib chiqib, mos yechimni taklif qilaman.
               </p>
 
               <div className="mt-9 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap sm:items-center">
@@ -95,7 +95,7 @@ export default function Contact() {
                     <span className="min-w-0">
                       <span className="block text-sm font-semibold text-espresso">{ch.name}</span>
                       <span className="block truncate text-xs text-mocha">{ch.handle}</span>
-                      <span className="block text-[11px] text-mocha/70">{ch.desc}</span>
+                      <span className="block text-[11px] text-mocha">{ch.desc}</span>
                     </span>
                     <ArrowUpRight className="ml-auto h-4 w-4 shrink-0 text-mocha transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-champagne" />
                   </a>
