@@ -1,11 +1,14 @@
-import { faqs } from "../config/faq";
 import { useOrder } from "../context/order";
+import { usePreferences } from "../context/usePreferences";
+import { localizeFaqs } from "../utils/localize";
 import { ArrowRight } from "./icons";
 import Reveal from "./Reveal";
 import SectionHeading from "./SectionHeading";
 
 export default function Faq() {
   const { openOrder } = useOrder();
+  const { t } = usePreferences();
+  const faqs = localizeFaqs(t);
 
   return (
     <section id="faq" className="relative z-10 px-4 py-20 sm:px-6 sm:py-28 lg:py-32">
@@ -13,13 +16,15 @@ export default function Faq() {
         <Reveal>
           <SectionHeading
             index="07"
-            kicker="FAQ"
+            kicker={t.faq.kicker}
             title={
               <>
-                Tez-tez beriladigan <span className="text-serif-italic font-medium text-champagne">savollar</span>
+                {t.faq.titleLead}{" "}
+                <span className="text-serif-italic font-medium text-champagne">{t.faq.titleAccent}</span>
+                {t.faq.titleTail}
               </>
             }
-            description="Sayt yaratish, texnik yordam va xalqaro mijozlar bilan ishlash haqida eng ko'p beriladigan savollarga qisqa javoblar."
+            description={t.faq.description}
           />
         </Reveal>
 
@@ -43,23 +48,21 @@ export default function Faq() {
 
         <Reveal delay={140}>
           <div className="mt-10 flex flex-col items-center justify-between gap-4 rounded-2xl border border-hairline bg-card/70 p-5 text-center sm:flex-row sm:p-6 sm:text-left">
-            <p className="text-sm leading-relaxed text-mocha">
-              Savolingizga javob topolmadingizmi? Loyihangiz haqida yozing — aniq javob beraman.
-            </p>
+            <p className="text-sm leading-relaxed text-mocha">{t.faq.stillQuestions}</p>
             <div className="flex w-full shrink-0 flex-col gap-2.5 sm:w-auto sm:flex-row">
               <a
                 href="#contact"
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-hairline bg-cream-2/60 px-5 py-3 text-sm font-semibold text-espresso transition-all duration-300 hover:border-champagne/60 hover:bg-card"
               >
-                Loyihani muhokala qilish
+                {t.common.discuss}
                 <ArrowRight className="h-4 w-4" />
               </a>
               <button
                 type="button"
                 onClick={() => openOrder()}
-                className="rounded-full bg-espresso px-5 py-3 text-sm font-semibold text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#473e35]"
+                className="rounded-full bg-espresso px-5 py-3 text-sm font-semibold text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-espresso-hover"
               >
-                Buyurtma berish
+                {t.common.order}
               </button>
             </div>
           </div>

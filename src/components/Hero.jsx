@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
-import { site } from "../config/site";
 import { useOrder } from "../context/order";
+import { usePreferences } from "../context/usePreferences";
 import { ArrowUpRight, Sparkle } from "./icons";
 
 function usePointerParallax() {
@@ -124,15 +124,11 @@ function BrowserMock() {
 
 export default function Hero() {
   const { openOrder } = useOrder();
+  const { t } = usePreferences();
   const pos = usePointerParallax();
   const scroll = useScrollParallax();
 
-  const words = [
-    { text: "Biznesingiz", accent: false },
-    { text: "uchun", accent: false },
-    { text: "web sayt", accent: false },
-    { text: "yaratish", accent: true },
-  ];
+  const words = t.hero.title;
 
   return (
     <section id="home" className="relative z-10 overflow-hidden px-4 pb-16 pt-32 sm:px-6 sm:pb-20 sm:pt-44">
@@ -146,7 +142,7 @@ export default function Hero() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-champagne opacity-60" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-champagne" />
             </span>
-            WEB DEVELOPER • UZBEKISTAN
+            {t.hero.badge}
           </div>
 
           <h1 className="text-[clamp(2rem,8.6vw,4.4rem)] font-extrabold leading-[1.06] tracking-tight text-espresso">
@@ -171,9 +167,7 @@ export default function Hero() {
             className="mt-7 max-w-xl text-base leading-relaxed text-mocha sm:text-lg animate-rise"
             style={{ animationDelay: "560ms" }}
           >
-            O'zbekiston, Qozog'iston va Rossiya bizneslari uchun zamonaviy web sayt yaratish: landing page, biznes
-            sayti, internet do'kon, Telegram bot va admin panel. React asosida tezkor, responsive va SEO-ga mos
-            saytlar. Narxlar $100 dan boshlanadi.
+            {t.hero.description}
           </p>
 
           <div
@@ -182,9 +176,9 @@ export default function Hero() {
           >
             <a
               href="#projects"
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-espresso px-7 py-3.5 text-sm font-semibold text-cream shadow-[0_18px_45px_-20px_rgba(52,45,39,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#473e35] sm:w-auto"
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-espresso px-7 py-3.5 text-sm font-semibold text-cream shadow-[0_18px_45px_-20px_rgba(52,45,39,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-espresso-hover sm:w-auto"
             >
-              Loyihalarni ko'rish
+              {t.hero.viewProjects}
               <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
             <button
@@ -192,7 +186,7 @@ export default function Hero() {
               onClick={() => openOrder()}
               className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-hairline bg-card/70 px-7 py-3.5 text-sm font-medium text-espresso backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne/60 hover:bg-cream-2 sm:w-auto"
             >
-              Sayt buyurtma qilish
+              {t.hero.orderSite}
             </button>
           </div>
 
@@ -201,7 +195,7 @@ export default function Hero() {
             style={{ animationDelay: "760ms" }}
           >
             <span className="h-1.5 w-1.5 rounded-full bg-champagne" />
-            Yangi loyihalar uchun ochiqman
+            {t.hero.available}
           </div>
         </div>
 
@@ -229,8 +223,8 @@ export default function Hero() {
                   100
                 </span>
                 <div>
-                  <div className="text-[11px] font-semibold text-espresso">100% Responsive</div>
-                  <div className="text-[9px] text-mocha">Mobil • Planshet • Desktop</div>
+                  <div className="text-[11px] font-semibold text-espresso">{t.hero.responsive}</div>
+                  <div className="text-[9px] text-mocha">{t.hero.devices}</div>
                 </div>
               </div>
             </div>
@@ -244,13 +238,13 @@ export default function Hero() {
             >
               <div className="mb-2 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.22em] text-champagne">
                 <Sparkle className="h-3 w-3" />
-                Kod
+                {t.hero.codeLabel}
               </div>
               <pre className="font-mono text-[10px] leading-relaxed text-mocha">
                 <code>
-                  <span className="text-champagne">const</span> sayt = {"{"}
-                  {"\n"}  tezlik: <span className="text-espresso">"yuqori"</span>,
-                  {"\n"}  dizayn: <span className="text-espresso">"premium"</span>,
+                  <span className="text-champagne">const</span> {t.hero.code.varName} = {"{"}
+                  {"\n"}  {t.hero.code.speed}: <span className="text-espresso">"{t.hero.code.speedValue}"</span>,
+                  {"\n"}  {t.hero.code.design}: <span className="text-espresso">"{t.hero.code.designValue}"</span>,
                   {"\n"}
                   {"}"};
                 </code>
@@ -261,7 +255,7 @@ export default function Hero() {
               className="absolute -right-3 -top-4 hidden rounded-full border border-hairline bg-card/90 px-3.5 py-2 text-[10px] font-semibold text-espresso backdrop-blur-xl md:block animate-float-y"
               style={{ animationDelay: "0.7s" }}
             >
-              • {site.location}
+              • {t.site.location}
             </div>
           </div>
         </div>

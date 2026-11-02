@@ -1,9 +1,13 @@
-import { additionalServices } from "../config/additionalServices";
+import { usePreferences } from "../context/usePreferences";
+import { localizeAdditionalServices } from "../utils/localize";
 import { ArrowRight, ServiceIcon } from "./icons";
 import Reveal from "./Reveal";
 import SectionHeading from "./SectionHeading";
 
 export default function AdditionalServices() {
+  const { t } = usePreferences();
+  const additionalServices = localizeAdditionalServices(t);
+
   return (
     <section
       id="additional-services"
@@ -14,13 +18,13 @@ export default function AdditionalServices() {
         <Reveal>
           <SectionHeading
             index="04"
-            kicker="QO'SHIMCHA XIZMATLAR"
+            kicker={t.additional.kicker}
             title={
               <>
-                <span id="additional-services-title">Qo'shimcha xizmatlar</span>
+                <span id="additional-services-title">{t.additional.titleLead}</span>
               </>
             }
-            description="Asosiy sayt bilan birga biznesingizni avtomatlashtirish va boshqaruvni soddalashtirish uchun qo'shimcha xizmatlar. Narxlar loyiha talablariga qarab aniqlanadi."
+            description={t.additional.description}
           />
         </Reveal>
 
@@ -47,7 +51,7 @@ export default function AdditionalServices() {
                   href="#contact"
                   className="mt-5 inline-flex items-center gap-1.5 self-start text-[11px] font-semibold uppercase tracking-[0.16em] text-mocha transition-colors duration-300 hover:text-champagne"
                 >
-                  Loyihani muhokala qilish
+                  {t.common.discuss}
                   <ArrowRight className="h-3.5 w-3.5" />
                 </a>
               </article>
@@ -56,10 +60,7 @@ export default function AdditionalServices() {
         </div>
 
         <Reveal delay={120}>
-          <p className="mt-6 text-center text-xs leading-relaxed text-mocha">
-            Barcha narxlar boshlang'ich. Yakuniy qiymat loyiha qamrovi, funksiyalar va integratsiyalarga qarab
-            belgilanadi. Individual loyihalar uchun narx alohida kelishiladi.
-          </p>
+          <p className="mt-6 text-center text-xs leading-relaxed text-mocha">{t.additional.note}</p>
         </Reveal>
       </div>
     </section>

@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { packages } from "../config/packages";
 import { site } from "../config/site";
 import { useOrder } from "../context/order";
+import { usePreferences } from "../context/usePreferences";
+import { localizePackages } from "../utils/localize";
 import { ArrowRight, Check, Sparkle, Telegram } from "./icons";
 import Reveal from "./Reveal";
 import SectionHeading from "./SectionHeading";
@@ -23,6 +24,7 @@ function useIsDesktop() {
 }
 
 function PackageCard({ pkg, openOrder }) {
+  const { t } = usePreferences();
   return (
     <div
       className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border p-[clamp(16px,3.6vw,30px)] transition-all duration-500 sm:rounded-3xl ${
@@ -36,8 +38,8 @@ function PackageCard({ pkg, openOrder }) {
           <div className="pointer-events-none absolute -top-24 left-1/2 h-56 w-56 -translate-x-1/2 rounded-full bg-champagne/25 blur-[90px]" />
           <span className="absolute right-4 top-4 inline-flex items-center gap-1 rounded-full bg-espresso px-3 py-1 text-[9px] font-bold uppercase tracking-[0.16em] text-cream">
             <Sparkle className="h-3 w-3 text-cream/80" />
-            <span className="hidden min-[400px]:inline">Tavsiya etiladi</span>
-            <span className="min-[400px]:hidden">Tavsiya</span>
+            <span className="hidden min-[400px]:inline">{t.packages.recommended}</span>
+            <span className="min-[400px]:hidden">{t.packages.recommendedShort}</span>
           </span>
         </>
       )}
@@ -77,17 +79,17 @@ function PackageCard({ pkg, openOrder }) {
           onClick={() => openOrder(pkg.id)}
           className={`w-full rounded-full px-6 py-3.5 text-sm font-semibold leading-tight transition-all duration-300 ${
             pkg.recommended
-              ? "bg-espresso text-cream shadow-[0_18px_45px_-20px_rgba(52,45,39,0.9)] hover:-translate-y-0.5 hover:bg-[#473e35]"
+              ? "bg-espresso text-cream shadow-[0_18px_45px_-20px_rgba(52,45,39,0.9)] hover:-translate-y-0.5 hover:bg-espresso-hover"
               : "border border-hairline bg-cream-2/60 text-espresso hover:-translate-y-0.5 hover:border-champagne/60 hover:bg-card"
           }`}
         >
-          Buyurtma berish
+          {t.common.order}
         </button>
         <a
           href="#contact"
           className="group/link flex items-center justify-center gap-2 rounded-full px-4 py-2 text-xs font-semibold text-mocha transition-colors duration-300 hover:text-espresso"
         >
-          Loyihani muhokala qilish
+          {t.common.discuss}
           <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/link:translate-x-0.5" />
         </a>
       </div>
@@ -95,7 +97,8 @@ function PackageCard({ pkg, openOrder }) {
   );
 }
 
-function PackageCarousel({ openOrder }) {
+function PackageCarousel({ packages, openOrder }) {
+  const { t, format } = usePreferences();
   const trackRef = useRef(null);
   const [active, setActive] = useState(0);
   const count = packages.length;
@@ -185,7 +188,7 @@ function PackageCarousel({ openOrder }) {
         tabIndex={0}
         role="group"
         aria-roledescription="carousel"
-        aria-label="Xizmat tariflari karuseli"
+        aria-label={t.packages.carouselAria}
         className="carousel-scroll flex snap-x snap-mandatory items-stretch gap-4 overflow-x-auto pb-2 select-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-champagne"
         style={{ touchAction: "pan-x pan-y", cursor: "grab" }}
       >
@@ -200,7 +203,7 @@ function PackageCarousel({ openOrder }) {
         <button
           type="button"
           onClick={() => step(-1)}
-          aria-label="Oldingi tarif"
+          aria-label={t.packages.prev}
           className="flex h-10 w-10 items-center justify-center rounded-full border border-hairline bg-card text-espresso transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne/60"
         >
           <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -212,7 +215,7 @@ function PackageCarousel({ openOrder }) {
             <button
               key={p.id}
               type="button"
-              aria-label={`${p.name} tarifi`}
+              aria-label={format(t.packages.slideAria, { name: p.name })}
               aria-current={active === i}
               onClick={() => scrollToIndex(i)}
               className="flex h-6 w-6 items-center justify-center rounded-full"
@@ -229,7 +232,7 @@ function PackageCarousel({ openOrder }) {
         <button
           type="button"
           onClick={() => step(1)}
-          aria-label="Keyingi tarif"
+          aria-label={t.packages.next}
           className="flex h-10 w-10 items-center justify-center rounded-full border border-hairline bg-card text-espresso transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne/60"
         >
           <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -243,6 +246,8 @@ function PackageCarousel({ openOrder }) {
 
 export default function Packages() {
   const { openOrder } = useOrder();
+  const { t } = usePreferences();
+  const packages = localizePackages(t);
   const isDesktop = useIsDesktop();
 
   return (
@@ -251,13 +256,15 @@ export default function Packages() {
         <Reveal>
           <SectionHeading
             index="03"
-            kicker="XIZMATLAR VA TARIFLAR"
+            kicker={t.packages.kicker}
             title={
               <>
-                Xizmatlar va <span className="text-serif-italic font-medium text-champagne">tariflar</span>
+                {t.packages.titleLead}{" "}
+                <span className="text-serif-italic font-medium text-champagne">{t.packages.titleAccent}</span>
+                {t.packages.titleTail}
               </>
             }
-            description="Biznesingiz hajmi va maqsadiga mos paketni tanlang. Har bir tarif aniq qamrov, shaffof narx va texnik yordam bilan boshlanadi."
+            description={t.packages.description}
           />
         </Reveal>
 
@@ -272,10 +279,10 @@ export default function Packages() {
         ) : (
           <div>
             <Reveal>
-              <PackageCarousel openOrder={openOrder} />
+              <PackageCarousel packages={packages} openOrder={openOrder} />
             </Reveal>
             <p className="mt-4 text-center text-[11px] text-mocha">
-              Tariflarni ko'rish uchun yon tomonga suring
+              {t.packages.swipeHint}
             </p>
           </div>
         )}
@@ -283,16 +290,14 @@ export default function Packages() {
         <Reveal delay={140}>
           <div className="mt-10 flex flex-col items-center justify-between gap-5 rounded-2xl border border-hairline bg-card/70 p-5 text-center sm:flex-row sm:p-7 sm:text-left">
             <div>
-              <p className="text-sm font-semibold text-espresso">Qaysi tarif mos kelishini bilmayapsizmi?</p>
-              <p className="mt-1 text-sm leading-relaxed text-mocha">
-                Loyiha haqida yozing — qamrovni birgalikda aniqlaymiz va eng mos yechimni taklif qilaman.
-              </p>
+              <p className="text-sm font-semibold text-espresso">{t.packages.notSureTitle}</p>
+              <p className="mt-1 text-sm leading-relaxed text-mocha">{t.packages.notSureText}</p>
             </div>
             <a
               href="#contact"
-              className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-full bg-espresso px-6 py-3 text-sm font-semibold text-cream shadow-[0_18px_45px_-20px_rgba(52,45,39,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#473e35] sm:w-auto"
+              className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-full bg-espresso px-6 py-3 text-sm font-semibold text-cream shadow-[0_18px_45px_-20px_rgba(52,45,39,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-espresso-hover sm:w-auto"
             >
-              Loyihani muhokala qilish
+              {t.common.discuss}
               <ArrowRight className="h-4 w-4" />
             </a>
           </div>
@@ -302,22 +307,15 @@ export default function Packages() {
           <div className="mt-6 grid gap-5 rounded-2xl border border-hairline bg-card/70 p-5 sm:p-7 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
             <div>
               <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.24em] text-champagne">
-                Xalqaro mijozlar
+                {t.packages.internationalKicker}
               </span>
               <h3 className="mt-2 text-lg font-bold tracking-tight text-espresso sm:text-xl">
-                O'zbekiston, Qozog'iston, Rossiya va boshqa bozorlar
+                {t.packages.internationalTitle}
               </h3>
-              <p lang="ru" className="mt-3 text-sm leading-relaxed text-mocha">
-                Работаю с клиентами из Узбекистана, Казахстана и других стран. Создаю современные цифровые решения
-                для развития бизнеса.
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-mocha">
-                Loyihalar masofadan turib olib boriladi: talablarni muhokama qilish, dizayn, ishlab chiqish va
-                topshirish bosqichlari onlayn kelishiladi.
-              </p>
+              <p className="mt-3 text-sm leading-relaxed text-mocha">{t.packages.internationalText}</p>
             </div>
             <div className="flex flex-wrap gap-2 lg:justify-end">
-              {["O'zbekiston", "Qozog'iston", "Rossiya", "Xalqaro"].map((market) => (
+              {t.packages.markets.map((market) => (
                 <span
                   key={market}
                   className="rounded-full border border-hairline bg-cream-2/60 px-3.5 py-1.5 text-xs font-medium text-espresso/85"
@@ -331,12 +329,7 @@ export default function Packages() {
 
         <Reveal delay={180}>
           <div className="mt-6 rounded-2xl border border-hairline bg-card/70 p-5 sm:p-7">
-            <p className="text-sm leading-relaxed text-mocha">
-              <strong className="text-espresso">Eslatma:</strong> barcha narxlar boshlang'ich bo'lib, yakuniy
-              hisob-kitob loyiha qamrovi, dizayn murakkabligi, funksionallik va integratsiyalarga qarab farq qiladi.
-              Domen, hosting, pullik uchinchi tomon xizmatlari va doimiy texnik xizmat alohida kelishiladi.
-              Cheksiz qayta ishlash yoki kelishilmagan funksiyalar taklif etilmaydi.
-            </p>
+            <p className="text-sm leading-relaxed text-mocha">{t.packages.note}</p>
             <a
               href={site.orderTelegram}
               target="_blank"
@@ -344,7 +337,7 @@ export default function Packages() {
               className="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-espresso transition-colors hover:text-champagne"
             >
               <Telegram className="h-4 w-4" />
-              Telegram orqali savol berish
+              {t.common.telegramQuestion}
             </a>
           </div>
         </Reveal>

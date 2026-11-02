@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useCallback, useMemo, useState } from "react";
 import About from "./components/About";
 import AdditionalServices from "./components/AdditionalServices";
 import Background from "./components/Background";
@@ -48,10 +48,6 @@ function OrderProvider({ children }) {
 }
 
 export default function App() {
-  useEffect(() => {
-    document.documentElement.lang = "uz";
-  }, []);
-
   return (
     <OrderProvider>
       <div className="grain relative min-h-screen overflow-x-hidden bg-cream text-espresso">

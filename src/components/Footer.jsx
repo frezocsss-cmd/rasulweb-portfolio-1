@@ -1,9 +1,11 @@
 import { navLinks, site } from "../config/site";
 import { useOrder } from "../context/order";
+import { usePreferences } from "../context/usePreferences";
 import { Instagram, Telegram } from "./icons";
 
 export default function Footer() {
   const { openOrder } = useOrder();
+  const { t } = usePreferences();
   const year = new Date().getFullYear();
 
   const socials = [
@@ -25,45 +27,40 @@ export default function Footer() {
                 <span className="text-champagne">{site.brandTld}</span>
               </span>
             </a>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-mocha">
-              {site.owner} — zamonaviy, responsive va interaktiv web-saytlar yaratuvchi frontend dasturchi.
-              O'zbekiston, Qozog'iston, Rossiya va xalqaro bizneslar uchun ishonchli raqamli yechim.
-            </p>
-            <p lang="en" className="mt-2 max-w-sm text-xs leading-relaxed text-mocha">
-              Available for international clients: website development, React development, e-commerce and business
-              automation.
-            </p>
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-mocha">{t.site.footerDescription}</p>
             <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-champagne/40 bg-champagne/10 px-3.5 py-1.5 text-[11px] font-medium text-espresso/80">
               <span className="h-1.5 w-1.5 rounded-full bg-champagne" />
-              Yangi loyihalar uchun ochiqman
+              {t.site.available}
             </div>
           </div>
 
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-[0.22em] text-espresso/90">Navigatsiya</h3>
+            <h3 className="text-xs font-bold uppercase tracking-[0.22em] text-espresso/90">
+              {t.site.navigation}
+            </h3>
             <ul className="mt-5 space-y-3">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <a href={link.href} className="text-sm text-mocha transition-colors hover:text-champagne">
-                    {link.label}
+                    {t.site.nav[link.key]}
                   </a>
                 </li>
               ))}
               <li>
                 <a href="#additional-services" className="text-sm text-mocha transition-colors hover:text-champagne">
-                  Qo'shimcha xizmatlar
+                  {t.site.additionalServices}
                 </a>
               </li>
               <li>
                 <a href="#faq" className="text-sm text-mocha transition-colors hover:text-champagne">
-                  FAQ
+                  {t.site.faq}
                 </a>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-[0.22em] text-espresso/90">Bog'lanish</h3>
+            <h3 className="text-xs font-bold uppercase tracking-[0.22em] text-espresso/90">{t.site.contact}</h3>
             <ul className="mt-5 space-y-3">
               <li>
                 <a
@@ -85,17 +82,15 @@ export default function Footer() {
                   Instagram — rasulweb.uz
                 </a>
               </li>
-              <li className="text-sm text-mocha">{site.location}</li>
-              <li className="text-xs leading-relaxed text-mocha">
-                Xizmatlar: O'zbekiston · Qozog'iston · Rossiya · Xalqaro
-              </li>
+              <li className="text-sm text-mocha">{t.site.location}</li>
+              <li className="text-xs leading-relaxed text-mocha">{t.site.servicesLine}</li>
             </ul>
             <button
               type="button"
               onClick={() => openOrder()}
-              className="mt-5 rounded-full bg-espresso px-5 py-2.5 text-xs font-semibold text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#473e35]"
+              className="mt-5 rounded-full bg-espresso px-5 py-2.5 text-xs font-semibold text-cream transition-all duration-300 hover:-translate-y-0.5 hover:bg-espresso-hover"
             >
-              Loyiha buyurtma qilish
+              {t.header.order}
             </button>
           </div>
         </div>
@@ -103,7 +98,7 @@ export default function Footer() {
         <div className="mt-12 flex flex-col items-center justify-between gap-5 border-t border-hairline pt-7 sm:flex-row">
           <p className="text-xs text-mocha">
             © {year} {site.brand}
-            {site.brandTld}. Barcha huquqlar himoyalangan.
+            {site.brandTld}. {t.site.rights}
           </p>
           <div className="flex items-center gap-3">
             {socials.map((s) => {

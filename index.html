@@ -17,8 +17,34 @@
     />
     <meta name="author" content="Rasul Ravshanbekov, Abdurasul Ravshanbekov Sobir o‘g‘li" />
     <meta name="theme-color" content="#F7F4ED" />
+    <script>
+      (function () {
+        try {
+          var storedTheme = localStorage.getItem("rasulweb-theme");
+          var storedLang = localStorage.getItem("rasulweb-language");
+          var dark =
+            storedTheme === "dark" ||
+            (!storedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          var root = document.documentElement;
+          root.dataset.theme = dark ? "dark" : "light";
+          root.classList.toggle("dark", dark);
+          root.style.colorScheme = dark ? "dark" : "light";
+          var initialLang =
+            storedLang === "uz" || storedLang === "ru" || storedLang === "en"
+              ? storedLang
+              : (navigator.language || "").slice(0, 2).toLowerCase();
+          root.lang = initialLang === "ru" || initialLang === "en" ? initialLang : "uz";
+          var themeColor = document.querySelector('meta[name="theme-color"]');
+          if (themeColor) themeColor.setAttribute("content", dark ? "#12100e" : "#F7F4ED");
+        } catch (error) {
+          /* storage may be unavailable */
+        }
+      })();
+    </script>
     <link rel="canonical" href="https://www.rasulweb.uz/" />
     <link rel="alternate" hreflang="uz" href="https://www.rasulweb.uz/" />
+    <link rel="alternate" hreflang="ru" href="https://www.rasulweb.uz/" />
+    <link rel="alternate" hreflang="en" href="https://www.rasulweb.uz/" />
     <link rel="alternate" hreflang="x-default" href="https://www.rasulweb.uz/" />
 
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />

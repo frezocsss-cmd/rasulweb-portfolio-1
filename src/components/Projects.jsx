@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { hostOf, previewUrl, projects } from "../config/projects";
+import { hostOf, previewUrl } from "../config/projects";
+import { usePreferences } from "../context/usePreferences";
 import useTilt from "../hooks/useTilt";
 import { ArrowUpRight } from "./icons";
 import Reveal from "./Reveal";
 import SectionHeading from "./SectionHeading";
+import { localizeProjects } from "../utils/localize";
 
 function Mockup({ project }) {
   return (
@@ -45,7 +47,7 @@ function Mockup({ project }) {
   );
 }
 
-function ProjectPreview({ project }) {
+function ProjectPreview({ project, alt }) {
   const [failed, setFailed] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const tilt = useTilt(4);
@@ -70,7 +72,7 @@ function ProjectPreview({ project }) {
         {!failed && (
           <img
             src={previewUrl(project.url)}
-            alt={`${project.name} — ${project.category} web sayti namunasi (Rasulweb.uz ishi)`}
+            alt={alt}
             loading="lazy"
             decoding="async"
             width="1400"
@@ -94,31 +96,39 @@ function ProjectPreview({ project }) {
 }
 
 export default function Projects() {
+  const { t, format } = usePreferences();
+  const items = localizeProjects(t);
+
   return (
     <section id="projects" className="relative z-10 px-4 py-20 sm:px-6 sm:py-28 lg:py-32">
       <div className="mx-auto max-w-7xl">
         <Reveal>
           <SectionHeading
             index="01"
-            kicker="PORTFOLIO"
+            kicker={t.projects.kicker}
             title={
               <>
-                Tanlangan <span className="text-serif-italic font-medium text-champagne">loyihalar</span>
+                {t.projects.titleLead}{" "}
+                <span className="text-serif-italic font-medium text-champagne">{t.projects.titleAccent}</span>
+                {t.projects.titleTail}
               </>
             }
-            description="Real bizneslar uchun yaratilgan va amalda ishlayotgan web saytlar. Har biri zamonaviy dizayn, responsive tuzilma va qulay foydalanishga asoslangan."
+            description={t.projects.description}
           />
         </Reveal>
 
         <div className="mt-16 space-y-20 sm:mt-24 sm:space-y-28 lg:space-y-32">
-          {projects.map((project, i) => {
+          {items.map((project, i) => {
             const alternate = i % 2 === 1;
             return (
               <Reveal key={project.id} delay={40}>
                 <article className="group relative grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
                   <div className={`relative ${alternate ? "lg:order-2" : ""}`}>
                     <Reveal variant="mask" delay={80}>
-                      <ProjectPreview project={project} />
+                      <ProjectPreview
+                        project={project}
+                        alt={format(t.projects.previewAlt, { name: project.name, category: project.category })}
+                      />
                     </Reveal>
                   </div>
 
@@ -133,7 +143,7 @@ export default function Projects() {
                         className="inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-[11px] font-semibold"
                         style={{
                           borderColor: `${project.accent}55`,
-                          color: "#342d27",
+                          color: "var(--color-espresso)",
                           background: `${project.accent}12`,
                         }}
                       >
@@ -153,7 +163,7 @@ export default function Projects() {
                         className="group/link mt-7 inline-flex items-center gap-3 text-sm font-semibold text-espresso"
                       >
                         <span className="border-b border-espresso/20 pb-0.5 transition-colors duration-300 group-hover/link:border-champagne group-hover/link:text-champagne">
-                          Saytni ko'rish
+                          {t.common.viewSite}
                         </span>
                         <span className="flex h-9 w-9 items-center justify-center rounded-full border border-hairline transition-all duration-300 group-hover/link:border-espresso group-hover/link:bg-espresso group-hover/link:text-cream">
                           <ArrowUpRight className="h-4 w-4" />

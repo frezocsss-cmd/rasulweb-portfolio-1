@@ -1,34 +1,36 @@
 import { site } from "../config/site";
 import { useOrder } from "../context/order";
+import { usePreferences } from "../context/usePreferences";
 import { ArrowUpRight, Instagram, Telegram } from "./icons";
 import Reveal from "./Reveal";
 
-const channels = [
-  {
-    name: "Telegram",
-    handle: "@rasulweb_uz",
-    href: site.telegram,
-    icon: Telegram,
-    desc: "Eng tez aloqa usuli",
-  },
-  {
-    name: "Telegram kanal",
-    handle: "@rasulweb_uz",
-    href: site.telegramChannel,
-    icon: Telegram,
-    desc: "Yangiliklar va ishlarim",
-  },
-  {
-    name: "Instagram",
-    handle: "rasulweb.uz",
-    href: site.instagram,
-    icon: Instagram,
-    desc: "Vizual ishlar va jarayon",
-  },
-];
-
 export default function Contact() {
   const { openOrder } = useOrder();
+  const { t } = usePreferences();
+
+  const channels = [
+    {
+      name: t.contact.channels.telegram.name,
+      handle: "@rasulweb_uz",
+      href: site.telegram,
+      icon: Telegram,
+      desc: t.contact.channels.telegram.desc,
+    },
+    {
+      name: t.contact.channels.channel.name,
+      handle: "@rasulweb_uz",
+      href: site.telegramChannel,
+      icon: Telegram,
+      desc: t.contact.channels.channel.desc,
+    },
+    {
+      name: t.contact.channels.instagram.name,
+      handle: "rasulweb.uz",
+      href: site.instagram,
+      icon: Instagram,
+      desc: t.contact.channels.instagram.desc,
+    },
+  ];
 
   return (
     <section id="contact" className="relative z-10 px-4 py-20 sm:px-6 sm:py-28 lg:py-32">
@@ -42,19 +44,19 @@ export default function Contact() {
               <div className="mb-5 flex items-center justify-center gap-3">
                 <span className="h-px w-8 bg-champagne/70" />
                 <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.28em] text-champagne">
-                  09 — ALOQA
+                  {t.contact.kicker}
                 </span>
                 <span className="h-px w-8 bg-champagne/70" />
               </div>
 
               <h2 className="text-[clamp(1.6rem,5.6vw,3rem)] font-extrabold leading-[1.12] tracking-tight text-espresso">
-                Keling, g'oyangizni{" "}
-                <span className="text-serif-italic font-medium text-champagne">haqiqiy loyihaga</span> aylantiramiz.
+                {t.contact.titleLead}{" "}
+                <span className="text-serif-italic font-medium text-champagne">{t.contact.titleAccent}</span>
+                {t.contact.titleTail}
               </h2>
 
               <p className="mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-mocha sm:text-base">
-                Biznesingiz uchun web-sayt kerakmi? O'zbekiston, Qozog'iston, Rossiya yoki boshqa davlatdan
-                bo'lsangiz ham loyiha haqida yozing — talablaringizni ko'rib chiqib, mos yechimni taklif qilaman.
+                {t.contact.description}
               </p>
 
               <div className="mt-9 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:flex-wrap sm:items-center">
@@ -62,28 +64,28 @@ export default function Contact() {
                   href={site.telegram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-espresso px-7 py-3.5 text-sm font-semibold text-cream shadow-[0_20px_50px_-22px_rgba(52,45,39,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#473e35]"
+                  className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-espresso px-7 py-3.5 text-sm font-semibold text-cream shadow-[0_20px_50px_-22px_rgba(52,45,39,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-espresso-hover"
                 >
                   <Telegram className="h-5 w-5" />
-                  Telegram orqali bog'lanish
+                  {t.contact.channels.telegram.name}
                 </a>
                 <button
                   type="button"
                   onClick={() => openOrder()}
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-hairline bg-card/70 px-7 py-3.5 text-sm font-medium text-espresso backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne/60 hover:bg-cream-2"
                 >
-                  Loyiha so'rovini yuborish
+                  {t.common.sendRequest}
                   <ArrowUpRight className="h-4 w-4" />
                 </button>
               </div>
             </div>
 
             <div className="relative mt-12 grid gap-4 sm:grid-cols-3">
-              {channels.map((ch, i) => {
+              {channels.map((ch) => {
                 const Icon = ch.icon;
                 return (
                   <a
-                    key={ch.name + i}
+                    key={ch.name}
                     href={ch.href}
                     target="_blank"
                     rel="noopener noreferrer"

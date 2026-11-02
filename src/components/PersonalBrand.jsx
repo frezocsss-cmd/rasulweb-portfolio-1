@@ -1,36 +1,24 @@
+import { usePreferences } from "../context/usePreferences";
 import Reveal from "./Reveal";
 import SectionHeading from "./SectionHeading";
 import { Instagram, GitHub } from "./icons";
 import { ArrowUpRight } from "./icons";
 
 export default function PersonalBrand() {
+  const { t } = usePreferences();
   const personalInfo = {
     name: "Rasul Ravshanbekov",
     fullName: "Abdurasul Ravshanbekov Sobir o‘g‘li",
-    title: "Junior+ Frontend Developer",
-    location: "Tashkent, Uzbekistan",
-    education: "Mars IT School",
+    title: t.personal.roleValue,
+    location: t.personal.locationValue,
+    education: t.personal.educationValue,
     portfolio: "https://rasulweb.uz/",
     instagram: "https://www.instagram.com/rasul_ravshanbekov/",
     github: "https://github.com/frezocsss-cmd",
     phone: "+998938271902",
   };
 
-  const skills = [
-    "HTML5",
-    "CSS3",
-    "JavaScript ES6+",
-    "React.js",
-    "React Hooks",
-    "Zustand",
-    "CRUD operations",
-    "Component-based architecture",
-    "Reusable components",
-    "API integration",
-    "Responsive web design",
-    "Git va GitHub",
-    "UX/UI design principles",
-  ];
+  const skills = t.personal.skills;
 
   const projects = [
     { name: "Formo.uz", url: "https://formo.uz/" },
@@ -44,43 +32,45 @@ export default function PersonalBrand() {
           <SectionHeading
             align="left"
             index="08"
-            kicker="SHAXSIY BRANDING"
+            kicker={t.personal.kicker}
             title={
               <>
-                Professional <span className="text-serif-italic font-medium text-champagne">ma'lumotlar</span>
+                {t.personal.titleLead}{" "}
+                <span className="text-serif-italic font-medium text-champagne">{t.personal.titleAccent}</span>
+                {t.personal.titleTail}
               </>
             }
-            description="Rasul Ravshanbekov — Junior+ Frontend Developer"
+            description={t.personal.description}
           />
         </Reveal>
 
         <div className="mt-12 grid gap-8 lg:grid-cols-2">
           <Reveal delay={80}>
             <div className="rounded-2xl border border-hairline bg-card/70 p-6 sm:p-8">
-              <h3 className="text-xl font-bold text-espresso">Men haqimda</h3>
+              <h3 className="text-xl font-bold text-espresso">{t.personal.aboutMe}</h3>
               <dl className="mt-6 space-y-4">
                 <div>
-                  <dt className="text-xs uppercase tracking-[0.18em] text-mocha">Ism familiya</dt>
+                  <dt className="text-xs uppercase tracking-[0.18em] text-mocha">{t.personal.labels.fullName}</dt>
                   <dd className="mt-1 text-sm text-espresso">{personalInfo.fullName}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs uppercase tracking-[0.18em] text-mocha">Qisqartirilgan ism</dt>
+                  <dt className="text-xs uppercase tracking-[0.18em] text-mocha">{t.personal.labels.shortName}</dt>
                   <dd className="mt-1 text-sm text-espresso">{personalInfo.name}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs uppercase tracking-[0.18em] text-mocha">Kasb</dt>
+                  <dt className="text-xs uppercase tracking-[0.18em] text-mocha">{t.personal.labels.role}</dt>
                   <dd className="mt-1 text-sm text-espresso">{personalInfo.title}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs uppercase tracking-[0.18em] text-mocha">Manzil</dt>
+                  <dt className="text-xs uppercase tracking-[0.18em] text-mocha">{t.personal.labels.location}</dt>
                   <dd className="mt-1 text-sm text-espresso">{personalInfo.location}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs uppercase tracking-[0.18em] text-mocha">Ta'lim</dt>
+                  <dt className="text-xs uppercase tracking-[0.18em] text-mocha">{t.personal.labels.education}</dt>
                   <dd className="mt-1 text-sm text-espresso">{personalInfo.education}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs uppercase tracking-[0.18em] text-mocha">Aloqa</dt>
+                  <dt className="text-xs uppercase tracking-[0.18em] text-mocha">{t.personal.labels.contact}</dt>
                   <dd className="mt-2 flex flex-wrap gap-2">
                     <a
                       href={`tel:${personalInfo.phone}`}
@@ -113,7 +103,7 @@ export default function PersonalBrand() {
                       className="inline-flex items-center gap-2 rounded-full border border-hairline bg-cream-2/60 px-3 py-1.5 text-xs text-espresso transition-colors hover:border-champagne/60 hover:text-champagne"
                     >
                       <ArrowUpRight className="h-4 w-4" />
-                      Portfolio
+                      {t.personal.labels.portfolio}
                     </a>
                   </dd>
                 </div>
@@ -124,7 +114,7 @@ export default function PersonalBrand() {
           <div className="space-y-8">
             <Reveal delay={120}>
               <div className="rounded-2xl border border-hairline bg-card/70 p-6 sm:p-8">
-                <h3 className="text-xl font-bold text-espresso">Texnik ko‘nikmalar</h3>
+                <h3 className="text-xl font-bold text-espresso">{t.personal.skillsTitle}</h3>
                 <div className="mt-6 flex flex-wrap gap-2">
                   {skills.map((skill) => (
                     <span
@@ -140,7 +130,7 @@ export default function PersonalBrand() {
 
             <Reveal delay={160}>
               <div className="rounded-2xl border border-hairline bg-card/70 p-6 sm:p-8">
-                <h3 className="text-xl font-bold text-espresso">Loyihalar</h3>
+                <h3 className="text-xl font-bold text-espresso">{t.personal.projectsTitle}</h3>
                 <ul className="mt-6 space-y-3">
                   {projects.map((project) => (
                     <li key={project.name}>

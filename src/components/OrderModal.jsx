@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { packages, siteTypes } from "../config/packages";
+import { siteTypes } from "../config/packages";
 import { site } from "../config/site";
 import { useOrder } from "../context/order";
+import { usePreferences } from "../context/usePreferences";
+import { localizePackages } from "../utils/localize";
 import {
   buildOrderMessage,
   formatPhoneInput,
@@ -28,6 +30,8 @@ const errorClass = "mt-1.5 text-[11px] font-medium text-rose-500";
 
 export default function OrderModal() {
   const { isOpen, closeOrder, selectedPackage } = useOrder();
+  const { t, format } = usePreferences();
+  const packages = useMemo(() => localizePackages(t), [t]);
   const [form, setForm] = useState(empty);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle");
@@ -35,7 +39,7 @@ export default function OrderModal() {
   const [message, setMessage] = useState("");
   const firstFieldRef = useRef(null);
 
-  const packageMap = useMemo(() => Object.fromEntries(packages.map((p) => [p.id, p])), []);
+  const packageMap = useMemo(() => Object.fromEntries(packages.map((p) => [p.id, p])), [packages]);
   const activePackage = form.paket ? packageMap[form.paket] : null;
   const orderLink = message ? telegramOrderLink(message, site.orderUsername) : site.orderTelegram;
 
@@ -51,15 +55,15 @@ export default function OrderModal() {
   useEffect(() => {
     if (!isOpen) return;
     document.body.style.overflow = "hidden";
-    const t = setTimeout(() => firstFieldRef.current?.focus(), 120);
-    const onKey = (e) => {
-      if (e.key === "Escape") closeOrder();
+    const timer = setTimeout(() => firstFieldRef.current?.focus(), 120);
+    const onKey = (event) => {
+      if (event.key === "Escape") closeOrder();
     };
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", onKey);
-      clearTimeout(t);
+      clearTimeout(timer);
     };
   }, [isOpen, closeOrder]);
 
@@ -77,12 +81,12 @@ export default function OrderModal() {
 
   const validate = () => {
     const next = {};
-    if (!form.ism.trim()) next.ism = "Ismingizni kiriting.";
-    if (!form.familiya.trim()) next.familiya = "Familiyangizni kiriting.";
-    if (!isValidUzPhone(form.telefon)) next.telefon = "Telefon raqamni to'liq kiriting (9 raqam).";
-    if (!form.saytTuri) next.saytTuri = "Sayt turini tanlang.";
-    if (!form.paket) next.paket = "Paketni tanlang.";
-    if (!form.consent) next.consent = "Ma'lumotlarni yuborishga rozilik bildiring.";
+    if (!form.ism.trim()) next.ism = t.order.errors.firstName;
+    if (!form.familiya.trim()) next.familiya = t.order.errors.lastName;
+    if (!isValidUzPhone(form.telefon)) next.telefon = t.order.errors.phone;
+    if (!form.saytTuri) next.saytTuri = t.order.errors.siteType;
+    if (!form.paket) next.paket = t.order.errors.package;
+    if (!form.consent) next.consent = t.order.errors.consent;
     setErrors(next);
     if (Object.keys(next).length) {
       const firstKey = Object.keys(next)[0];
@@ -91,19 +95,22 @@ export default function OrderModal() {
     return Object.keys(next).length === 0;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     if (status !== "idle") return;
     if (!validate()) return;
 
-    const text = buildOrderMessage({
-      ism: form.ism,
-      familiya: form.familiya,
-      telefon: form.telefon,
-      saytTuri: form.saytTuri,
-      paket: activePackage,
-      talablar: form.talablar,
-    });
+    const text = buildOrderMessage(
+      {
+        ism: form.ism,
+        familiya: form.familiya,
+        telefon: form.telefon,
+        saytTuri: t.order.siteTypes[form.saytTuri],
+        paket: activePackage,
+        talablar: form.talablar,
+      },
+      t.order.message
+    );
 
     setMessage(text);
     setStatus("submitting");
@@ -132,9 +139,9 @@ export default function OrderModal() {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-end justify-center bg-espresso/40 backdrop-blur-sm sm:items-center sm:p-4"
-      onMouseDown={(e) => {
-        if (e.target === e.currentTarget) closeOrder();
+      className="fixed inset-0 z-[100] flex items-end justify-center bg-overlay backdrop-blur-sm sm:items-center sm:p-4"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) closeOrder();
       }}
       role="dialog"
       aria-modal="true"
@@ -148,19 +155,19 @@ export default function OrderModal() {
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0">
               <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.24em] text-champagne sm:text-[11px] sm:tracking-[0.28em]">
-                Loyiha so'rovi
+                {t.order.kicker}
               </span>
               <h2
                 id="order-modal-title"
                 className="mt-1.5 text-lg font-extrabold tracking-tight text-espresso sm:mt-2 sm:text-2xl"
               >
-                {status === "success" ? "Buyurtma tayyor!" : "Buyurtma berish"}
+                {status === "success" ? t.order.successTitle : t.order.title}
               </h2>
             </div>
             <button
               type="button"
               onClick={closeOrder}
-              aria-label="Yopish"
+              aria-label={t.common.close}
               className="shrink-0 rounded-full border border-hairline bg-cream-2/60 p-2 text-mocha transition-colors hover:bg-cream-2 hover:text-espresso"
             >
               <Close className="h-5 w-5" />
@@ -176,17 +183,15 @@ export default function OrderModal() {
                   <Check className="h-5 w-5" />
                 </span>
                 <div>
-                  <p className="text-sm font-semibold text-espresso">Telegram ochildi va xabar tayyorlandi</p>
-                  <p className="mt-1 text-xs leading-relaxed text-mocha">
-                    Telegram oynasida tayyor xabarni <strong className="text-espresso">yuboring</strong> — shundan keyin
-                    buyurtma menga yetib keladi. Xabar avtomatik yuborilmadi, uni siz tasdiqlaysiz.
-                  </p>
+                  <p className="text-xs leading-relaxed text-mocha">{t.order.successDesc}</p>
                 </div>
               </div>
 
               <div className="mt-4 rounded-2xl border border-hairline bg-cream-2/40 p-4">
                 <div className="mb-2 flex items-center justify-between gap-3">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-mocha">Buyurtma matni</span>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-mocha">
+                    {t.order.orderText}
+                  </span>
                   <span className="truncate text-[10px] font-medium text-mocha">@{site.orderUsername}</span>
                 </div>
                 <pre className="max-h-52 overflow-y-auto whitespace-pre-wrap break-words font-mono text-[11px] leading-relaxed text-espresso/80">
@@ -200,16 +205,16 @@ export default function OrderModal() {
                   onClick={copyAgain}
                   className="flex-1 rounded-full border border-hairline bg-cream-2/60 px-6 py-3.5 text-sm font-semibold text-espresso transition-all duration-300 hover:border-champagne/60 hover:bg-card"
                 >
-                  {copied ? "Nusxalandi ✓" : "Xabarni nusxalash"}
+                  {copied ? t.order.copied : t.order.copy}
                 </button>
                 <a
                   href={orderLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex flex-1 items-center justify-center gap-2 rounded-full bg-espresso px-6 py-3.5 text-sm font-semibold text-cream transition-all duration-300 hover:bg-[#473e35]"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-full bg-espresso px-6 py-3.5 text-sm font-semibold text-cream transition-all duration-300 hover:bg-espresso-hover"
                 >
                   <Telegram className="h-4 w-4" />
-                  Telegramni ochish
+                  {t.order.openTelegram}
                 </a>
               </div>
             </div>
@@ -218,7 +223,7 @@ export default function OrderModal() {
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="min-w-0">
                   <label htmlFor="of-ism" className={labelClass}>
-                    Ism <span className="text-champagne">*</span>
+                    {t.order.firstName} <span className="text-champagne">*</span>
                   </label>
                   <input
                     id="of-ism"
@@ -226,23 +231,23 @@ export default function OrderModal() {
                     type="text"
                     autoComplete="given-name"
                     value={form.ism}
-                    onChange={(e) => set("ism", e.target.value)}
-                    placeholder="Aziz"
+                    onChange={(event) => set("ism", event.target.value)}
+                    placeholder={t.order.firstNamePlaceholder}
                     className={inputClass}
                   />
                   {fieldError("ism")}
                 </div>
                 <div className="min-w-0">
                   <label htmlFor="of-familiya" className={labelClass}>
-                    Familiya <span className="text-champagne">*</span>
+                    {t.order.lastName} <span className="text-champagne">*</span>
                   </label>
                   <input
                     id="of-familiya"
                     type="text"
                     autoComplete="family-name"
                     value={form.familiya}
-                    onChange={(e) => set("familiya", e.target.value)}
-                    placeholder="Karimov"
+                    onChange={(event) => set("familiya", event.target.value)}
+                    placeholder={t.order.lastNamePlaceholder}
                     className={inputClass}
                   />
                   {fieldError("familiya")}
@@ -250,7 +255,7 @@ export default function OrderModal() {
 
                 <div className="min-w-0">
                   <label htmlFor="of-telefon" className={labelClass}>
-                    Telefon raqam <span className="text-champagne">*</span>
+                    {t.order.phone} <span className="text-champagne">*</span>
                   </label>
                   <div className="flex items-stretch overflow-hidden rounded-xl border border-hairline bg-cream-2/50 transition-all duration-300 focus-within:border-champagne/70 focus-within:bg-card focus-within:ring-2 focus-within:ring-champagne/20">
                     <span className="flex select-none items-center border-r border-hairline bg-cream-2/70 px-3 text-sm font-semibold text-mocha">
@@ -262,8 +267,8 @@ export default function OrderModal() {
                       inputMode="numeric"
                       autoComplete="tel"
                       value={formatPhoneInput(form.telefon)}
-                      onChange={(e) => setPhone(e.target.value)}
-                      placeholder="90 123 45 67"
+                      onChange={(event) => setPhone(event.target.value)}
+                      placeholder={t.order.phonePlaceholder}
                       className="w-full min-w-0 bg-transparent px-3 py-3 text-sm text-espresso outline-none placeholder:text-mocha"
                     />
                   </div>
@@ -272,20 +277,20 @@ export default function OrderModal() {
 
                 <div className="min-w-0">
                   <label htmlFor="of-saytTuri" className={labelClass}>
-                    Qanday turdagi sayt kerak? <span className="text-champagne">*</span>
+                    {t.order.siteType} <span className="text-champagne">*</span>
                   </label>
                   <select
                     id="of-saytTuri"
                     value={form.saytTuri}
-                    onChange={(e) => set("saytTuri", e.target.value)}
+                    onChange={(event) => set("saytTuri", event.target.value)}
                     className={`${inputClass} appearance-none`}
                   >
-                    <option value="" className="bg-card">
-                      Tanlang...
+                    <option value="" className="bg-card text-espresso">
+                      {t.order.selectPlaceholder}
                     </option>
-                    {siteTypes.map((t) => (
-                      <option key={t} value={t} className="bg-card">
-                        {t}
+                    {siteTypes.map((type) => (
+                      <option key={type} value={type} className="bg-card text-espresso">
+                        {t.order.siteTypes[type]}
                       </option>
                     ))}
                   </select>
@@ -295,20 +300,20 @@ export default function OrderModal() {
 
               <div className="min-w-0">
                 <label htmlFor="of-paket" className={labelClass}>
-                  Qaysi paket tanlandi? <span className="text-champagne">*</span>
+                  {t.order.package} <span className="text-champagne">*</span>
                 </label>
                 <select
                   id="of-paket"
                   value={form.paket}
-                  onChange={(e) => set("paket", e.target.value)}
+                  onChange={(event) => set("paket", event.target.value)}
                   className={`${inputClass} appearance-none`}
                 >
-                  <option value="" className="bg-card">
-                    Tanlang...
+                  <option value="" className="bg-card text-espresso">
+                    {t.order.selectPlaceholder}
                   </option>
-                  {packages.map((p) => (
-                    <option key={p.id} value={p.id} className="bg-card">
-                      {p.name} — {p.priceLabel} {p.priceNote}
+                  {packages.map((pkg) => (
+                    <option key={pkg.id} value={pkg.id} className="bg-card text-espresso">
+                      {pkg.name} — {pkg.priceLabel} {pkg.priceNote}
                     </option>
                   ))}
                 </select>
@@ -316,12 +321,12 @@ export default function OrderModal() {
               </div>
 
               <div className="min-w-0">
-                <span className={labelClass}>Paket ichidagi talablar</span>
+                <span className={labelClass}>{t.order.featuresLabel}</span>
                 {activePackage ? (
                   <div className="rounded-xl border border-hairline bg-cream-2/40 p-4">
                     <div className="mb-2.5 flex items-start justify-between gap-3">
                       <span className="text-xs font-semibold text-espresso/90">
-                        {activePackage.name} paketiga kiritilgan
+                        {format(t.order.featuresTitle, { name: activePackage.name })}
                       </span>
                       <span className="shrink-0 text-[11px] font-semibold text-champagne">
                         {activePackage.priceLabel} {activePackage.priceNote}
@@ -340,21 +345,21 @@ export default function OrderModal() {
                   </div>
                 ) : (
                   <p className="rounded-xl border border-dashed border-hairline bg-cream-2/30 px-4 py-3.5 text-xs text-mocha">
-                    Paketni tanlang — unga kiritilgan talablar shu yerda ko'rinadi.
+                    {t.order.packageHint}
                   </p>
                 )}
               </div>
 
               <div className="min-w-0">
                 <label htmlFor="of-talablar" className={labelClass}>
-                  Qo'shimcha talablar yoki loyiha haqida izoh
+                  {t.order.extraLabel}
                 </label>
                 <textarea
                   id="of-talablar"
                   rows={4}
                   value={form.talablar}
-                  onChange={(e) => set("talablar", e.target.value)}
-                  placeholder="Bo'limlar, uslub, brend ranglari, kerakli funksiyalar..."
+                  onChange={(event) => set("talablar", event.target.value)}
+                  placeholder={t.order.extraPlaceholder}
                   className={`${inputClass} resize-none`}
                 />
               </div>
@@ -363,31 +368,29 @@ export default function OrderModal() {
                 <input
                   type="checkbox"
                   checked={form.consent}
-                  onChange={(e) => set("consent", e.target.checked)}
+                  onChange={(event) => set("consent", event.target.checked)}
                   className="mt-0.5 h-4 w-4 shrink-0 accent-[#b8a58a]"
                 />
                 <span className="min-w-0">
-                  Kiritgan ma'lumotlarim buyurtmani muhokama qilish uchun ishlatilishiga roziman.
+                  {t.order.consent}
                   {errors.consent && <span className="mt-1 block text-rose-500">{errors.consent}</span>}
                 </span>
               </label>
 
               <div className="flex flex-col gap-3 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-[11px] leading-relaxed text-mocha">
-                  Yuborilgach, buyurtma matni nusxalanadi va Telegram ochiladi.
-                </p>
+                <p className="text-[11px] leading-relaxed text-mocha">{t.order.submitNote}</p>
                 <button
                   type="submit"
                   disabled={status !== "idle"}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-espresso px-7 py-3.5 text-sm font-semibold text-cream shadow-[0_18px_45px_-20px_rgba(52,45,39,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#473e35] disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-espresso px-7 py-3.5 text-sm font-semibold text-cream shadow-[0_18px_45px_-20px_rgba(52,45,39,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-espresso-hover disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
                 >
                   {status === "submitting" ? (
                     <>
                       <span className="h-4 w-4 animate-spin rounded-full border-2 border-cream/40 border-t-cream" />
-                      Tayyorlanmoqda...
+                      {t.order.submitting}
                     </>
                   ) : (
-                    "Buyurtmani yuborish"
+                    t.order.submit
                   )}
                 </button>
               </div>

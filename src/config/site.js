@@ -1,9 +1,6 @@
 export const site = {
   brand: "RASULWEB",
   brandTld: ".UZ",
-  owner: "Rasul Ravshanbekov",
-  role: "Frontend Developer & Web-sayt yaratuvchi",
-  location: "O'zbekiston",
   url: "https://www.rasulweb.uz/",
   telegram: "https://t.me/rasulweb_uz",
   telegramChannel: "https://t.me/rasulweb_uz",
@@ -13,12 +10,12 @@ export const site = {
 };
 
 export const navLinks = [
-  { href: "#home", label: "Bosh sahifa" },
-  { href: "#projects", label: "Loyihalar" },
-  { href: "#services", label: "Xizmatlar" },
-  { href: "#packages", label: "Tariflar" },
-  { href: "#about", label: "Men haqimda" },
-  { href: "#contact", label: "Aloqa" },
+  { href: "#home", key: "home" },
+  { href: "#projects", key: "projects" },
+  { href: "#services", key: "services" },
+  { href: "#packages", key: "packages" },
+  { href: "#about", key: "about" },
+  { href: "#contact", key: "contact" },
 ];
 
 export const technologies = [

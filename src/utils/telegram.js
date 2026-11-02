@@ -25,29 +25,32 @@ export function formatOrderDate(date = new Date()) {
   )}:${pad(date.getMinutes())}`;
 }
 
-export function buildOrderMessage(data) {
+export function buildOrderMessage(data, copy = {}) {
   const { ism, familiya, telefon, saytTuri, paket, talablar, date } = data;
+  const none = copy.none ?? "—";
+  const client = [ism, familiya].filter(Boolean).join(" ").trim() || none;
+
   return [
-    "🛍️ YANGI SAYT BUYURTMASI",
+    copy.title,
     "━━━━━━━━━━━━━━━━━━",
     "",
-    `👤 Mijoz: ${[ism, familiya].filter(Boolean).join(" ").trim() || "—"}`,
-    `📞 Telefon: ${fullPhone(telefon)}`,
+    `${copy.client}: ${client}`,
+    `${copy.phone}: ${fullPhone(telefon)}`,
     "",
-    `🌐 Sayt turi: ${saytTuri || "—"}`,
-    `📦 Paket: ${paket ? paket.name : "—"}`,
-    `💰 Paket narxi: ${paket ? `${paket.priceLabel} ${paket.priceNote}` : "—"}`,
+    `${copy.siteType}: ${saytTuri || none}`,
+    `${copy.package}: ${paket ? paket.name : none}`,
+    `${copy.packagePrice}: ${paket ? `${paket.priceLabel} ${paket.priceNote}` : none}`,
     "",
-    "✅ PAKET TALABLARI:",
-    ...(paket ? paket.features.map((f) => `• ${f}`) : ["• —"]),
+    copy.requirements,
+    ...(paket ? paket.features.map((feature) => `• ${feature}`) : [`• ${none}`]),
     "",
-    "📝 QO'SHIMCHA TALABLAR:",
-    (talablar && talablar.trim()) || "—",
+    copy.extra,
+    (talablar && talablar.trim()) || none,
     "",
-    `📅 Buyurtma sanasi: ${formatOrderDate(date)}`,
+    `${copy.date}: ${formatOrderDate(date)}`,
     "",
     "━━━━━━━━━━━━━━━━━━",
-    "Rasulweb.uz — Website Development",
+    copy.footer,
   ].join("\n");
 }
 

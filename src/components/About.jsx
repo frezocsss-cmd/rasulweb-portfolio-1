@@ -1,43 +1,54 @@
 import { technologies } from "../config/site";
+import { usePreferences } from "../context/usePreferences";
 import { TechIcon } from "./icons";
 import Reveal from "./Reveal";
 import SectionHeading from "./SectionHeading";
 
-const codeLines = [
-  [
-    { t: "const", c: "text-champagne" },
-    { t: " developer", c: "text-espresso/90" },
-    { t: " = ", c: "text-mocha" },
-    { t: "{", c: "text-mocha" },
-  ],
-  [
-    { t: "  nomi", c: "text-espresso/80" },
-    { t: ": ", c: "text-mocha" },
-    { t: "'Rasul Ravshanbekov'", c: "text-champagne" },
-    { t: ",", c: "text-mocha" },
-  ],
-  [
-    { t: "  kasbi", c: "text-espresso/80" },
-    { t: ": ", c: "text-mocha" },
-    { t: "'Frontend Developer'", c: "text-champagne" },
-    { t: ",", c: "text-mocha" },
-  ],
-  [
-    { t: "  yondashuv", c: "text-espresso/80" },
-    { t: ": ", c: "text-mocha" },
-    { t: "'dizayn + tezlik'", c: "text-champagne" },
-    { t: ",", c: "text-mocha" },
-  ],
-  [
-    { t: "  holat", c: "text-espresso/80" },
-    { t: ": ", c: "text-mocha" },
-    { t: "'loyihalarga ochiq'", c: "text-champagne" },
-    { t: ",", c: "text-mocha" },
-  ],
-  [{ t: "};", c: "text-mocha" }],
-];
+function buildCodeLines(t) {
+  const key = "text-espresso/80";
+  const sep = "text-mocha";
+  const value = "text-champagne";
+  const keyword = "text-champagne";
+
+  return [
+    [
+      { text: "const", className: keyword },
+      { text: " developer", className: "text-espresso/90" },
+      { text: " = ", className: sep },
+      { text: "{", className: sep },
+    ],
+    [
+      { text: "  name", className: key },
+      { text: ": ", className: sep },
+      { text: `'${t.about.code.name}'`, className: value },
+      { text: ",", className: sep },
+    ],
+    [
+      { text: "  role", className: key },
+      { text: ": ", className: sep },
+      { text: `'${t.about.code.role}'`, className: value },
+      { text: ",", className: sep },
+    ],
+    [
+      { text: "  approach", className: key },
+      { text: ": ", className: sep },
+      { text: `'${t.about.code.approach}'`, className: value },
+      { text: ",", className: sep },
+    ],
+    [
+      { text: "  status", className: key },
+      { text: ": ", className: sep },
+      { text: `'${t.about.code.status}'`, className: value },
+      { text: ",", className: sep },
+    ],
+    [{ text: "};", className: sep }],
+  ];
+}
 
 export default function About() {
+  const { t } = usePreferences();
+  const codeLines = buildCodeLines(t);
+
   return (
     <section id="about" className="relative z-10 px-4 py-20 sm:px-6 sm:py-28 lg:py-32">
       <div className="mx-auto max-w-7xl">
@@ -47,22 +58,19 @@ export default function About() {
               <SectionHeading
                 align="left"
                 index="05"
-                kicker="MEN HAQIMDA"
+                kicker={t.about.kicker}
                 title={
                   <>
-                    Men g'oyalarni{" "}
-                    <span className="text-serif-italic font-medium text-champagne">web-saytlarga</span> aylantiraman.
+                    {t.about.titleLead}{" "}
+                    <span className="text-serif-italic font-medium text-champagne">{t.about.titleAccent}</span>{" "}
+                    {t.about.titleTail}
                   </>
                 }
               />
             </Reveal>
 
             <Reveal delay={80}>
-              <p className="mt-6 max-w-xl text-sm leading-relaxed text-mocha sm:text-base">
-                Men Rasul Ravshanbekov — zamonaviy, responsive va interaktiv web saytlar yaratishga ixtisoslashgan
-                frontend dasturchiman. React va zamonaviy web texnologiyalari yordamida bizneslar uchun chiroyli
-                ko'rinadigan, qulay ishlaydigan va SEO-ga mos saytlar yarataman.
-              </p>
+              <p className="mt-6 max-w-xl text-sm leading-relaxed text-mocha sm:text-base">{t.about.description}</p>
             </Reveal>
 
             <Reveal delay={160}>
@@ -105,8 +113,8 @@ export default function About() {
                       {codeLines.map((line, i) => (
                         <div key={i} className="whitespace-pre">
                           {line.map((tok, j) => (
-                            <span key={j} className={tok.c}>
-                              {tok.t}
+                            <span key={j} className={tok.className}>
+                              {tok.text}
                             </span>
                           ))}
                         </div>
@@ -121,7 +129,7 @@ export default function About() {
               </div>
 
               <div className="absolute -bottom-5 -left-4 hidden rounded-2xl border border-hairline bg-card/95 px-4 py-3 backdrop-blur-xl sm:block animate-float-y">
-                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-mocha">Stack</div>
+                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-mocha">{t.about.stack}</div>
                 <div className="mt-1 text-sm font-semibold text-espresso">React · JS · Tailwind</div>
               </div>
             </div>

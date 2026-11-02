@@ -1,9 +1,11 @@
 import { technologies } from "../config/site";
+import { usePreferences } from "../context/usePreferences";
 
 export default function TechMarquee() {
+  const { t } = usePreferences();
   const items = [...technologies, ...technologies];
   return (
-    <section aria-label="Ishlatiladigan texnologiyalar" className="relative z-10 border-y border-hairline py-7">
+    <section aria-label={t.marquee.aria} className="relative z-10 border-y border-hairline py-7">
       <div className="mask-fade-x overflow-hidden">
         <div className="flex w-max animate-marquee items-center gap-10 px-6">
           {items.map((tech, i) => (
