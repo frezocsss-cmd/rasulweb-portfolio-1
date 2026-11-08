@@ -9,8 +9,10 @@ export function localizePackages(t) {
     ...pkg,
     tagline: t.packages.items[pkg.id].tagline,
     summary: t.packages.items[pkg.id].summary,
-    priceNote: t.packages.items[pkg.id].priceNote,
+    description: t.packages.items[pkg.id].summary,
     features: t.packages.items[pkg.id].features,
+    priceNote: t.packages.perMonth,
+    priceFull: `${pkg.priceLabel} ${pkg.currency} ${t.packages.perMonth}`,
   }));
 }
 

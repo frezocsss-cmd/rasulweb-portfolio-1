@@ -313,7 +313,7 @@ export default function OrderModal() {
                   </option>
                   {packages.map((pkg) => (
                     <option key={pkg.id} value={pkg.id} className="bg-card text-espresso">
-                      {pkg.name} — {pkg.priceLabel} {pkg.priceNote}
+                      {pkg.name} — {pkg.priceFull}
                     </option>
                   ))}
                 </select>
@@ -329,7 +329,7 @@ export default function OrderModal() {
                         {format(t.order.featuresTitle, { name: activePackage.name })}
                       </span>
                       <span className="shrink-0 text-[11px] font-semibold text-champagne">
-                        {activePackage.priceLabel} {activePackage.priceNote}
+                        {activePackage.priceFull}
                       </span>
                     </div>
                     <ul className="space-y-2">

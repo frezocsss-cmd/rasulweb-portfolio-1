@@ -1,291 +1,174 @@
-import { useCallback, useEffect, useRef, useState } from "react";
 import { site } from "../config/site";
-import { useOrder } from "../context/order";
 import { usePreferences } from "../context/usePreferences";
 import { localizePackages } from "../utils/localize";
+import { buildMonthlyPlanMessage, telegramOrderLink } from "../utils/telegram";
 import { ArrowRight, Check, Sparkle, Telegram } from "./icons";
 import Reveal from "./Reveal";
-import SectionHeading from "./SectionHeading";
 
-function useIsDesktop() {
-  const [isDesktop, setIsDesktop] = useState(
-    () => typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches
+function PlanCard({ plan, index, t, format }) {
+  const href = telegramOrderLink(
+    buildMonthlyPlanMessage(plan, t.packages.message),
+    site.orderUsername
   );
 
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1024px)");
-    const onChange = () => setIsDesktop(mq.matches);
-    onChange();
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
-
-  return isDesktop;
-}
-
-function PackageCard({ pkg, openOrder }) {
-  const { t } = usePreferences();
   return (
-    <div
-      className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border p-[clamp(16px,3.6vw,30px)] transition-all duration-500 sm:rounded-3xl ${
-        pkg.recommended
-          ? "border-champagne/60 bg-card shadow-[0_40px_100px_-55px_rgba(184,165,138,0.9)]"
-          : "border-hairline bg-card/70 hover:-translate-y-1.5 hover:border-champagne/40"
+    <article
+      className={`monthly-plan-card group h-full ${
+        plan.recommended ? "monthly-plan-card--featured" : ""
       }`}
     >
-      {pkg.recommended && (
-        <>
-          <div className="pointer-events-none absolute -top-24 left-1/2 h-56 w-56 -translate-x-1/2 rounded-full bg-champagne/25 blur-[90px]" />
-          <span className="absolute right-4 top-4 inline-flex items-center gap-1 rounded-full bg-espresso px-3 py-1 text-[9px] font-bold uppercase tracking-[0.16em] text-cream">
-            <Sparkle className="h-3 w-3 text-cream/80" />
-            <span className="hidden min-[400px]:inline">{t.packages.recommended}</span>
-            <span className="min-[400px]:hidden">{t.packages.recommendedShort}</span>
-          </span>
-        </>
+      {plan.recommended && (
+        <div className="pointer-events-none absolute -right-16 -top-20 h-48 w-48 rounded-full bg-champagne/25 blur-[70px]" />
       )}
 
-      <div className="relative min-w-0">
-        <h3 className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-champagne">{pkg.name}</h3>
-        <p className="mt-2 text-xs font-medium leading-relaxed text-mocha">{pkg.tagline}</p>
-        <div className="mt-5 flex flex-wrap items-end gap-x-2 gap-y-1">
-          <span className="text-[clamp(1.85rem,5.4vw,2.6rem)] font-extrabold leading-none tracking-tight text-espresso">
-            {pkg.priceLabel}
-          </span>
-          <span className="mb-1 text-xs font-medium text-mocha">{pkg.priceNote}</span>
-        </div>
-        <p className="mt-3 text-sm leading-relaxed text-mocha">{pkg.summary}</p>
-      </div>
-
-      <div className="relative my-6 h-px w-full bg-hairline" />
-
-      <ul className="relative flex-1 space-y-3.5">
-        {pkg.features.map((feature) => (
-          <li key={feature} className="flex items-start gap-3 text-sm leading-snug text-espresso/85">
-            <span
-              className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${
-                pkg.recommended ? "bg-champagne/20 text-champagne" : "bg-cream-2 text-mocha"
-              }`}
-            >
-              <Check className="h-3 w-3" />
+      <div className="relative flex flex-1 flex-col">
+        <div className="flex items-start justify-between gap-3">
+          <h3 className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-monthly-accent">
+            {plan.name}
+          </h3>
+          {plan.recommended ? (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-champagne/35 bg-champagne/15 px-3 py-1 text-[9px] font-bold uppercase tracking-[0.14em] text-monthly-accent">
+              <Sparkle className="h-3 w-3 shrink-0" />
+              <span className="hidden min-[400px]:inline">{t.packages.recommended}</span>
+              <span className="min-[400px]:hidden">{t.packages.recommendedShort}</span>
             </span>
-            <span className="min-w-0 break-words">{feature}</span>
-          </li>
-        ))}
-      </ul>
-
-      <div className="relative mt-7 space-y-3">
-        <button
-          type="button"
-          onClick={() => openOrder(pkg.id)}
-          className={`w-full rounded-full px-6 py-3.5 text-sm font-semibold leading-tight transition-all duration-300 ${
-            pkg.recommended
-              ? "bg-espresso text-cream shadow-[0_18px_45px_-20px_rgba(52,45,39,0.9)] hover:-translate-y-0.5 hover:bg-espresso-hover"
-              : "border border-hairline bg-cream-2/60 text-espresso hover:-translate-y-0.5 hover:border-champagne/60 hover:bg-card"
-          }`}
-        >
-          {t.common.order}
-        </button>
-        <a
-          href="#contact"
-          className="group/link flex items-center justify-center gap-2 rounded-full px-4 py-2 text-xs font-semibold text-mocha transition-colors duration-300 hover:text-espresso"
-        >
-          {t.common.discuss}
-          <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/link:translate-x-0.5" />
-        </a>
-      </div>
-    </div>
-  );
-}
-
-function PackageCarousel({ packages, openOrder }) {
-  const { t, format } = usePreferences();
-  const trackRef = useRef(null);
-  const [active, setActive] = useState(0);
-  const count = packages.length;
-  const dragging = useRef(false);
-  const startX = useRef(0);
-  const startScroll = useRef(0);
-
-  const slideStride = () => {
-    const el = trackRef.current;
-    if (!el || el.children.length < 2) return 0;
-    const a = el.children[0].getBoundingClientRect();
-    const b = el.children[1].getBoundingClientRect();
-    return b.left - a.left;
-  };
-
-  const scrollToIndex = useCallback((index, smooth = true) => {
-    const el = trackRef.current;
-    if (!el) return;
-    const stride = slideStride();
-    if (!stride) return;
-    const clamped = Math.max(0, Math.min(count - 1, index));
-    el.scrollTo({ left: clamped * stride, behavior: smooth ? "smooth" : "auto" });
-  }, [count]);
-
-  useEffect(() => {
-    const raf = requestAnimationFrame(() => scrollToIndex(0, false));
-    return () => cancelAnimationFrame(raf);
-  }, [scrollToIndex]);
-
-  const currentIndex = useCallback(() => {
-    const el = trackRef.current;
-    if (!el) return 0;
-    const stride = slideStride();
-    if (!stride) return 0;
-    return Math.max(0, Math.min(count - 1, Math.round(el.scrollLeft / stride)));
-  }, [count]);
-
-  const onScroll = useCallback(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    const stride = slideStride();
-    if (!stride) return;
-    setActive(Math.max(0, Math.min(count - 1, Math.round(el.scrollLeft / stride))));
-  }, [count]);
-
-  const step = (dir) => {
-    scrollToIndex(currentIndex() + dir);
-  };
-
-  const onPointerDown = (e) => {
-    if (e.pointerType !== "mouse") return;
-    dragging.current = true;
-    startX.current = e.clientX;
-    startScroll.current = trackRef.current.scrollLeft;
-  };
-
-  const onPointerMove = (e) => {
-    if (!dragging.current) return;
-    const dx = e.clientX - startX.current;
-    trackRef.current.scrollLeft = startScroll.current - dx;
-  };
-
-  const endDrag = () => {
-    if (!dragging.current) return;
-    dragging.current = false;
-    scrollToIndex(currentIndex());
-  };
-
-  return (
-    <div className="relative mt-12 sm:mt-16">
-      <div
-        ref={trackRef}
-        onScroll={onScroll}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={endDrag}
-        onPointerLeave={endDrag}
-        onKeyDown={(e) => {
-          if (e.key === "ArrowRight") {
-            e.preventDefault();
-            step(1);
-          } else if (e.key === "ArrowLeft") {
-            e.preventDefault();
-            step(-1);
-          }
-        }}
-        tabIndex={0}
-        role="group"
-        aria-roledescription="carousel"
-        aria-label={t.packages.carouselAria}
-        className="carousel-scroll flex snap-x snap-mandatory items-stretch gap-4 overflow-x-auto pb-2 select-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-champagne"
-        style={{ touchAction: "pan-x pan-y", cursor: "grab" }}
-      >
-        {packages.map((pkg) => (
-          <div key={pkg.id} className="w-[82vw] max-w-[360px] shrink-0 snap-center sm:w-[68vw] md:w-[52vw]">
-            <PackageCard pkg={pkg} openOrder={openOrder} />
-          </div>
-        ))}
-      </div>
-
-      <div className="mt-6 flex items-center justify-center gap-4">
-        <button
-          type="button"
-          onClick={() => step(-1)}
-          aria-label={t.packages.prev}
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-hairline bg-card text-espresso transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne/60"
-        >
-          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M15 6l-6 6 6 6" />
-          </svg>
-        </button>
-        <div className="flex items-center gap-2">
-          {packages.map((p, i) => (
-            <button
-              key={p.id}
-              type="button"
-              aria-label={format(t.packages.slideAria, { name: p.name })}
-              aria-current={active === i}
-              onClick={() => scrollToIndex(i)}
-              className="flex h-6 w-6 items-center justify-center rounded-full"
-            >
-              <span
-                aria-hidden="true"
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  active === i ? "w-7 bg-champagne" : "w-1.5 bg-espresso/20"
-                }`}
-              />
-            </button>
-          ))}
+          ) : (
+            <span className="font-mono text-[10px] font-semibold tracking-[0.2em] text-white/25">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+          )}
         </div>
-        <button
-          type="button"
-          onClick={() => step(1)}
-          aria-label={t.packages.next}
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-hairline bg-card text-espresso transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne/60"
-        >
-          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M9 6l6 6-6 6" />
-          </svg>
-        </button>
+
+        <p className="mt-3 text-[13px] font-medium leading-relaxed text-monthly-accent">
+          {plan.tagline}
+        </p>
+        <p className="mt-2 min-h-[3rem] text-sm leading-relaxed text-white/65">{plan.summary}</p>
+
+        <div className="mt-5 flex flex-wrap items-end gap-x-2 gap-y-1">
+          <span className="text-[clamp(1.9rem,5.8vw,2.7rem)] font-extrabold leading-none tracking-tight text-white">
+            {plan.priceLabel}
+          </span>
+          <span className="mb-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-monthly-accent">
+            {plan.currency}
+          </span>
+          <span className="mb-1 text-xs font-medium text-white/45">{t.packages.perMonth}</span>
+        </div>
+
+        <div className="my-6 h-px w-full bg-white/10" />
+
+        <ul className="flex-1 space-y-3.5">
+          {plan.features.map((feature) => (
+            <li key={feature} className="flex items-start gap-3 text-[13px] leading-snug text-white/75">
+              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-champagne/30 bg-champagne/10 text-monthly-accent">
+                <Check className="h-3 w-3" />
+              </span>
+              <span className="min-w-0 break-words">{feature}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-7">
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={format(t.packages.chooseAria, { name: plan.name })}
+            className={`group/btn relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-full px-6 py-3.5 text-sm font-semibold transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-champagne ${
+              plan.recommended ? "monthly-plan-cta-featured" : "monthly-plan-cta"
+            }`}
+          >
+            <Telegram className="h-4 w-4" />
+            <span>{t.packages.choose}</span>
+            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-0.5" />
+          </a>
+          <p className="mt-2.5 text-center text-[10px] font-medium uppercase tracking-[0.14em] text-white/35">
+            {t.packages.telegramNote}
+          </p>
+          <a
+            href="#contact"
+            className="group/link mt-2 flex items-center justify-center gap-1.5 text-[11px] font-semibold text-white/45 transition-colors duration-300 hover:text-white/80"
+          >
+            {t.common.discuss}
+            <ArrowRight className="h-3 w-3 transition-transform duration-300 group-hover/link:translate-x-0.5" />
+          </a>
+        </div>
       </div>
-    </div>
+    </article>
   );
 }
 
 export default function Packages() {
-  const { openOrder } = useOrder();
-  const { t } = usePreferences();
-  const packages = localizePackages(t);
-  const isDesktop = useIsDesktop();
+  const { t, format } = usePreferences();
+  const plans = localizePackages(t);
 
   return (
-    <section id="packages" className="relative z-10 px-4 py-20 sm:px-6 sm:py-28 lg:py-32">
+    <section
+      id="packages"
+      aria-labelledby="packages-title"
+      className="relative z-10 px-4 py-20 sm:px-6 sm:py-28 lg:py-32"
+    >
       <div className="mx-auto max-w-7xl">
-        <Reveal>
-          <SectionHeading
-            index="03"
-            kicker={t.packages.kicker}
-            title={
-              <>
-                {t.packages.titleLead}{" "}
-                <span className="text-serif-italic font-medium text-champagne">{t.packages.titleAccent}</span>
-                {t.packages.titleTail}
-              </>
-            }
-            description={t.packages.description}
-          />
-        </Reveal>
+        <div className="monthly-plans-shell relative overflow-hidden rounded-[1.75rem] px-4 py-12 sm:rounded-[2.25rem] sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+            <div className="monthly-plans-grid absolute inset-0 opacity-70" />
+            <div className="absolute -top-24 left-1/2 h-64 w-[30rem] -translate-x-1/2 rounded-full bg-champagne/20 blur-[110px]" />
+            <div className="absolute -bottom-32 -left-24 h-64 w-64 rounded-full bg-champagne/10 blur-[100px]" />
+            <div className="absolute -right-24 top-1/3 h-64 w-64 rounded-full bg-champagne/10 blur-[110px]" />
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-champagne/70 to-transparent" />
+          </div>
 
-        {isDesktop ? (
-          <div className="mt-12 grid items-stretch gap-6 lg:grid-cols-3">
-            {packages.map((pkg, i) => (
-              <Reveal key={pkg.id} delay={i * 110} className="h-full">
-                <PackageCard pkg={pkg} openOrder={openOrder} />
+          <Reveal>
+            <div className="relative mx-auto max-w-3xl text-center">
+              <div className="mb-4 flex items-center justify-center gap-3">
+                <span className="h-px w-8 bg-champagne/70" />
+                <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.28em] text-monthly-accent">
+                  03 — {t.packages.kicker}
+                </span>
+                <span className="h-px w-8 bg-champagne/70" />
+              </div>
+              <h2
+                id="packages-title"
+                className="text-[clamp(1.65rem,5.6vw,3rem)] font-extrabold leading-[1.12] tracking-tight text-white"
+              >
+                {t.packages.titleLead}{" "}
+                <span className="text-serif-italic font-medium text-monthly-accent">
+                  {t.packages.titleAccent}
+                </span>
+                {t.packages.titleTail}
+              </h2>
+              <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-white/60 sm:text-base">
+                {t.packages.description}
+              </p>
+              <p className="mx-auto mt-6 flex max-w-2xl items-start justify-center gap-2.5 rounded-2xl border border-champagne/20 bg-champagne/[0.07] px-4 py-3 text-xs leading-relaxed text-monthly-accent sm:text-sm">
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-champagne" />
+                <span>{t.packages.subscription}</span>
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="relative mt-10 grid gap-5 sm:mt-14 lg:grid-cols-3 lg:items-stretch lg:gap-6">
+            {plans.map((plan, i) => (
+              <Reveal key={plan.id} delay={i * 110} className="h-full">
+                <PlanCard plan={plan} index={i} t={t} format={format} />
               </Reveal>
             ))}
           </div>
-        ) : (
-          <div>
-            <Reveal>
-              <PackageCarousel packages={packages} openOrder={openOrder} />
-            </Reveal>
-            <p className="mt-4 text-center text-[11px] text-mocha">
-              {t.packages.swipeHint}
-            </p>
-          </div>
-        )}
+
+          <Reveal delay={360}>
+            <div className="relative mt-10 flex flex-col items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/[0.035] px-5 py-4 text-center backdrop-blur-md sm:flex-row sm:text-left">
+              <p className="text-xs leading-relaxed text-white/55 sm:text-sm">{t.packages.note}</p>
+              <a
+                href={site.orderTelegram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex shrink-0 items-center gap-2 rounded-full border border-champagne/30 bg-champagne/10 px-4 py-2 text-xs font-semibold text-monthly-accent transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne/60 hover:bg-champagne/15"
+              >
+                <Telegram className="h-4 w-4" />
+                {t.packages.askTelegram}
+              </a>
+            </div>
+          </Reveal>
+        </div>
 
         <Reveal delay={140}>
           <div className="mt-10 flex flex-col items-center justify-between gap-5 rounded-2xl border border-hairline bg-card/70 p-5 text-center sm:flex-row sm:p-7 sm:text-left">
@@ -324,21 +207,6 @@ export default function Packages() {
                 </span>
               ))}
             </div>
-          </div>
-        </Reveal>
-
-        <Reveal delay={180}>
-          <div className="mt-6 rounded-2xl border border-hairline bg-card/70 p-5 sm:p-7">
-            <p className="text-sm leading-relaxed text-mocha">{t.packages.note}</p>
-            <a
-              href={site.orderTelegram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-espresso transition-colors hover:text-champagne"
-            >
-              <Telegram className="h-4 w-4" />
-              {t.common.telegramQuestion}
-            </a>
           </div>
         </Reveal>
       </div>

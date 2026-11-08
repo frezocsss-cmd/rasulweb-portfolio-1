@@ -207,6 +207,137 @@ html.theme-transition *::after {
     border: 1px solid var(--color-hairline);
     box-shadow: 0 1px 2px rgba(52, 45, 39, 0.03), 0 18px 50px -34px rgba(52, 45, 39, 0.4);
   }
+
+  .monthly-plans-shell {
+    background:
+      radial-gradient(115% 115% at 50% -18%, rgba(184, 165, 138, 0.24), transparent 55%),
+      linear-gradient(160deg, #1c1712 0%, #14110e 52%, #0e0c0a 100%);
+    border: 1px solid rgba(216, 185, 138, 0.18);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.06) inset,
+      0 50px 120px -60px rgba(0, 0, 0, 0.85);
+    color: #f6f0e7;
+  }
+
+  .monthly-plans-grid {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 54px 54px;
+    -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 8%, transparent 72%);
+    mask-image: radial-gradient(ellipse at 50% 0%, #000 8%, transparent 72%);
+  }
+
+  .monthly-plan-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 1.5rem;
+    border: 1px solid rgba(240, 226, 205, 0.12);
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.02));
+    padding: clamp(1.25rem, 3vw, 2rem);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    transition:
+      transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.5s ease,
+      box-shadow 0.5s ease,
+      background 0.5s ease;
+  }
+
+  .monthly-plan-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      115deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.11) 48%,
+      transparent 64%
+    );
+    transform: translateX(-135%);
+    transition: transform 0.9s ease;
+  }
+
+  .monthly-plan-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(216, 185, 138, 0.42);
+    box-shadow: 0 40px 90px -52px rgba(0, 0, 0, 0.95);
+  }
+
+  .monthly-plan-card:hover::after {
+    transform: translateX(135%);
+  }
+
+  .monthly-plan-card:focus-within {
+    border-color: rgba(216, 185, 138, 0.55);
+  }
+
+  .monthly-plan-card--featured {
+    border-color: rgba(216, 185, 138, 0.5);
+    background: linear-gradient(
+      160deg,
+      rgba(216, 185, 138, 0.17),
+      rgba(255, 255, 255, 0.035) 46%,
+      rgba(255, 255, 255, 0.02)
+    );
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.08) inset,
+      0 45px 105px -55px rgba(216, 185, 138, 0.6);
+  }
+
+  .monthly-plan-card--featured:hover {
+    border-color: rgba(216, 185, 138, 0.72);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.1) inset,
+      0 55px 120px -50px rgba(216, 185, 138, 0.7);
+  }
+
+  .monthly-plan-cta,
+  .monthly-plan-cta-featured {
+    border-radius: 999px;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease,
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      color 0.3s ease;
+  }
+
+  .monthly-plan-cta {
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.045);
+    color: #f7f1e7;
+  }
+
+  .monthly-plan-cta:hover {
+    transform: translateY(-2px);
+    border-color: rgba(216, 185, 138, 0.55);
+    background: rgba(255, 255, 255, 0.09);
+  }
+
+  .monthly-plan-cta-featured {
+    background: linear-gradient(120deg, #d8b98a, #f3e1c4 55%, #d8b98a);
+    color: #241c14;
+    box-shadow: 0 18px 45px -22px rgba(216, 185, 138, 0.8);
+  }
+
+  .monthly-plan-cta-featured:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 24px 55px -20px rgba(216, 185, 138, 0.95);
+  }
+
+  @media (min-width: 1024px) {
+    .monthly-plan-card--featured {
+      transform: translateY(-10px);
+    }
+    .monthly-plan-card--featured:hover {
+      transform: translateY(-16px);
+    }
+  }
 }
 
 :root[data-theme="dark"] .glass {
@@ -215,6 +346,13 @@ html.theme-transition *::after {
 
 :root[data-theme="dark"] .card-surface {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 18px 50px -34px rgba(0, 0, 0, 0.65);
+}
+
+:root[data-theme="dark"] .monthly-plans-shell {
+  background:
+    radial-gradient(115% 115% at 50% -18%, rgba(214, 185, 138, 0.18), transparent 55%),
+    linear-gradient(160deg, #1a1612 0%, #13100d 52%, #0d0b09 100%);
+  border-color: rgba(216, 185, 138, 0.24);
 }
 
 :root[data-theme="dark"] .grain::after {
@@ -232,6 +370,9 @@ html.theme-transition *::after {
   }
   .text-champagne {
     color: var(--color-champagne-ink);
+  }
+  .text-monthly-accent {
+    color: #e6cfa9;
   }
   .mask-fade-x {
     -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
@@ -272,5 +413,14 @@ html.theme-transition *::after {
   .reveal-mask {
     opacity: 1 !important;
     transform: none !important;
+  }
+  .monthly-plan-card:hover,
+  .monthly-plan-card--featured:hover,
+  .monthly-plan-cta:hover,
+  .monthly-plan-cta-featured:hover {
+    transform: none;
+  }
+  .monthly-plan-card::after {
+    display: none;
   }
 }

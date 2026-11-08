@@ -39,7 +39,9 @@ export function buildOrderMessage(data, copy = {}) {
     "",
     `${copy.siteType}: ${saytTuri || none}`,
     `${copy.package}: ${paket ? paket.name : none}`,
-    `${copy.packagePrice}: ${paket ? `${paket.priceLabel} ${paket.priceNote}` : none}`,
+    `${copy.packagePrice}: ${
+      paket ? paket.priceFull || `${paket.priceLabel} ${paket.priceNote}` : none
+    }`,
     "",
     copy.requirements,
     ...(paket ? paket.features.map((feature) => `• ${feature}`) : [`• ${none}`]),
@@ -48,6 +50,34 @@ export function buildOrderMessage(data, copy = {}) {
     (talablar && talablar.trim()) || none,
     "",
     `${copy.date}: ${formatOrderDate(date)}`,
+    "",
+    "━━━━━━━━━━━━━━━━━━",
+    copy.footer,
+  ].join("\n");
+}
+
+export function buildMonthlyPlanMessage(plan, copy = {}) {
+  const none = copy.none ?? "—";
+  const planName = plan?.name || none;
+  const planPrice = plan
+    ? `${plan.priceLabel} ${plan.currency}${plan.priceNote ? ` ${plan.priceNote}` : ""}`.trim()
+    : none;
+
+  const inquiry = copy.inquiry ? [copy.inquiry, ""] : [];
+
+  return [
+    copy.title,
+    "━━━━━━━━━━━━━━━━━━",
+    "",
+    `${copy.plan}: ${planName}`,
+    `${copy.price}: ${planPrice}`,
+    ...inquiry,
+    `${copy.description}: ${plan?.description || none}`,
+    "",
+    copy.features,
+    ...(plan?.features?.length ? plan.features.map((feature) => `• ${feature}`) : [`• ${none}`]),
+    "",
+    `${copy.date}: ${formatOrderDate()}`,
     "",
     "━━━━━━━━━━━━━━━━━━",
     copy.footer,
